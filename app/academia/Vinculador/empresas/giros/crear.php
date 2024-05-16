@@ -1,8 +1,6 @@
 <?php
 session_start();
 require '../../../../../config/db.php';
-
-// Obtener los datos del formulario
 $nombre = $_POST['nombre'];
 $descripcion = $_POST['descripcion'];
 

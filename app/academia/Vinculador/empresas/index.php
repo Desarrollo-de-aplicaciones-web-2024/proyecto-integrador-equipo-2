@@ -1,8 +1,8 @@
 <?php
 session_start();
-require_once '../../../../../config/global.php';
-require '../../../../../config/db.php';
-define('RUTA_INCLUDE', '../../../../../'); //ajustar a necesidad
+require_once '../../../../config/global.php';
+require '../../../../config/db.php';
+define('RUTA_INCLUDE', '../../../../'); //ajustar a necesidad
 
 $status = isset($_SESSION['status']) ? $_SESSION['status'] : null;
 $mensaje = isset($_SESSION['mensaje']) ? $_SESSION['mensaje'] : null;
@@ -10,10 +10,9 @@ $mensaje = isset($_SESSION['mensaje']) ? $_SESSION['mensaje'] : null;
 // Limpiar los datos recibidos
 unset($_SESSION['status']);
 unset($_SESSION['mensaje']);
-
 function getRegistros($conexion) {
 
-    $sql_select = "SELECT * FROM giros";
+    $sql_select = "SELECT empresas.id,empresas.nombre, empresas.email, empresas.telefono, empresas.giro, empresas.ciudad, empresas.direccion, giros.nombre AS nombre_giro from empresas LEFT JOIN giros ON empresas.giro = giros.id;";
     $res = mysqli_query($conexion, $sql_select);
 
     // Mostrar los registros en una tabla
@@ -24,18 +23,30 @@ function getRegistros($conexion) {
                 <tr>
                     <th>ID</th>
                     <th>Nombre</th>
-                    <th>Descripción</th>
+                    <th>Correo</th>
+                    <th>Teléfono</th>
+                    <th>Giro</th>
+                    <th>Ciudad</th>
+                    <th>Direción</th>
                     <th>Acciones</th>
+                    
                 </tr>';
         while ($row = mysqli_fetch_assoc($res)) {
             $editModal = 'editModal' . $row['id']; // ID único para el modal
             $deleteModal = 'deleteModal' . $row['id']; // ID único para el modal
-
+            // No necesitamos convenios para practias profesionales
+            //<th>Vencimiento del convenio</th>
+            //<td>' . (empty($row['vencimiento']) ? 'indefinido' : $row['vencimiento']). '</td>
             echo '
                 <tr>
                     <td>' . $row['id'] . '</td>
                     <td>' . $row['nombre'] . '</td>
-                    <td>' . $row['descripcion'] . '</td>
+                    <td>' . $row['email'] . '</td>
+                    <td>' . $row['telefono'] . '</td>
+                    <td>' . $row['nombre_giro'] . '</td>
+                    <td>' . $row['ciudad'] . '</td>
+                    <td>' . $row['direccion'] . '</td>
+                    
                     <td>
                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#' . $editModal . '">Editar</button>
                         <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#' . $deleteModal . '">Eliminar</button>
@@ -61,12 +72,12 @@ function getRegistros($conexion) {
                                     <input required name='nombre' type='text' class='form-control' id='nombre-modal-" . $row['id'] . "' value='" . htmlspecialchars($row['nombre']) . "'>
                                 </div>
                                 <div class='form-group'>
-                                    <label for='descripcion-modal-" . $row['id'] . "' class='col-form-label'>Descripción</label>
-                                    <textarea required name='descripcion' class='form-control' id='descripcion-modal-" . $row['id'] . "'>" . htmlspecialchars($row['descripcion']) . "</textarea>
+                                    <label for='correo-modal-" . $row['id'] . "' class='col-form-label'>Correo electrónico</label>
+                                    <input type='text' required name='correo' class='form-control' id='correo-modal-" . $row['id'] . "' value='" . htmlspecialchars($row['email']) . "'>
                                 </div>
                                 <div class='modal-footer'>
                                     <button type='button' class='btn btn-secondary' data-dismiss='modal'>Cerrar</button>
-                                    <button type='submit' class='btn btn-primary' onclick='editar(". $row['id'] . ")'>Guardar</button>
+                                    <button type='button' class='btn btn-primary' onclick='editar(". $row['id'] . ")'>Guardar</button>
                                 </div>
                             </form>
                         </div>
@@ -76,8 +87,9 @@ function getRegistros($conexion) {
 
             echo "<script>
                 function editar(id) {
+                
                     var nombre = document.getElementById('nombre-modal-' + id);
-                    var descripcion = document.getElementById('descripcion-modal-' + id);
+                    var descripcion = document.getElementById('correo-modal-' + id);
                 
                     // Verificar si los campos están vacíos
                     if (nombre.value.trim() === '' || descripcion.value.trim() === '') {
@@ -180,34 +192,33 @@ function getRegistros($conexion) {
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">Vinculación</li>
-                    <li class="breadcrumb-item">Empresas</li>
-                    <li class="breadcrumb-item active" aria-current="page">Giros</li>
+                    <li class="breadcrumb-item active" aria-current="page">Empresas</li>
                 </ol>
 
                 <?php
 
-                    switch ($status) {
-                        case 'exito':
-                            echo "
+                switch ($status) {
+                    case 'exito':
+                        echo "
                             <div class='alert alert-success  alert-dismissible fade show' role= 'alert'>
                                 <i class='fas fa-check'></i> $mensaje
                                   <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
                                     <span aria-hidden='true'>&times;</span>
                                   </button>
                             </div>";
-                            break;
-                        case 'error':
-                            echo "
+                        break;
+                    case 'error':
+                        echo "
                             <div class='alert alert-danger  alert-dismissible fade show' role= 'alert'>
                                 <i class='fas fa-exclamation-triangle'></i> $mensaje
                                 <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
                                     <span aria-hidden='true'>&times;</span>
                                 </button>
                             </div>";
-                            break;
-                        default:
-                            break;
-                    }
+                        break;
+                    default:
+                        break;
+                }
 
 
                 ?>
@@ -220,7 +231,7 @@ function getRegistros($conexion) {
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel' . $row['id'] . '">Crear un nuevo giro</h5>
+                                <h5 class="modal-title" id="exampleModalLabel' . $row['id'] . '">Registrar empresa</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -231,18 +242,96 @@ function getRegistros($conexion) {
                                         <label for='nombre'>Nombre o razón social</label>
                                         <input required type='text' name='nombre' id='nombre' class="form-control">
                                         <div class="invalid-feedback">
-                                            Por favor, ingresar nombre.
+                                            Por favor, ingrese el nombre.
+                                        </div>
+
+                                    </div>
+
+                                    <div class='form-group'>
+                                        <label for='correo'>Correo electrónico</label>
+                                        <input required type="email" name='correo' id='correo' class="form-control" aria-describedby="emailHelp">
+                                        <div class="invalid-feedback">
+                                            Por favor, ingrese un correo valido.
                                         </div>
                                     </div>
 
                                     <div class='form-group'>
-                                        <label for='descripcion'>Descripción del giro de la empresa</label>
-                                        <textarea required name='descripcion' id='descripcion' class="form-control" cols='30' rows='5'></textarea>
+                                        <label for='telefono'>Teléfono de contacto</label>
+                                        <input required type="tel" name='telefono' id='telefono' class="form-control"  pattern="^\+?[0-9\s\-\(\)]{10,15}$">
                                         <div class="invalid-feedback">
-                                            Por favor, ingresar descripción.
+                                            Por favor, ingrese un telefono valido.
                                         </div>
                                     </div>
 
+                                    <div class='form-group'>
+                                        <label for="giro">Giro de la empresa</label>
+                                        <select  required class="custom-select" id="giro" name="giro">
+                                            <option selected value="">Seleccione un giro...</option>
+                                            <?php
+                                            $sql_select = "SELECT id,nombre FROM giros";
+                                            $res = mysqli_query($conexion, $sql_select);
+
+                                            if ($res) {
+                                                while ($row = mysqli_fetch_assoc($res)) {
+                                                    echo '<option value=' . $row['id'] . '>' . $row['nombre'] . '</option>';
+                                                }
+                                            }
+                                            ?>
+                                        </select>
+                                        <div class="invalid-feedback">
+                                            Por favor, seleccione el giro.
+                                        </div>
+                                    </div>
+
+                                    <div class='form-group'>
+                                        <label for='ciudad'>Ciudad</label>
+                                        <select required name='ciudad' id='ciudad' class="custom-select"
+                                        >
+                                            <option value="">Seleccione una ciudad</option>
+                                            <option value="Aguascalientes, Aguascalientes">Aguascalientes, Aguascalientes</option>
+                                            <option value="Mexicali, Baja California">Mexicali, Baja California</option>
+                                            <option value="La Paz, Baja California Sur">La Paz, Baja California Sur</option>
+                                            <option value="Campeche, Campeche">Campeche, Campeche</option>
+                                            <option value="Saltillo, Coahuila">Saltillo, Coahuila</option>
+                                            <option value="Colima, Colima">Colima, Colima</option>
+                                            <option value="Tuxtla Gutiérrez, Chiapas">Tuxtla Gutiérrez, Chiapas</option>
+                                            <option value="Chihuahua, Chihuahua">Chihuahua, Chihuahua</option>
+                                            <option value="Durango, Durango">Durango, Durango</option>
+                                            <option value="Guanajuato, Guanajuato">Guanajuato, Guanajuato</option>
+                                            <option value="Acapulco, Guerrero">Acapulco, Guerrero</option>
+                                            <option value="Pachuca, Hidalgo">Pachuca, Hidalgo</option>
+                                            <option value="Guadalajara, Jalisco">Guadalajara, Jalisco</option>
+                                            <option value="Toluca, Estado de México">Toluca, Estado de México</option>
+                                            <option value="Morelia, Michoacán">Morelia, Michoacán</option>
+                                            <option value="Cuernavaca, Morelos">Cuernavaca, Morelos</option>
+                                            <option value="Tepic, Nayarit">Tepic, Nayarit</option>
+                                            <option value="Monterrey, Nuevo León">Monterrey, Nuevo León</option>
+                                            <option value="Oaxaca, Oaxaca">Oaxaca, Oaxaca</option>
+                                            <option value="Puebla, Puebla">Puebla, Puebla</option>
+                                            <option value="Querétaro, Querétaro">Querétaro, Querétaro</option>
+                                            <option value="Chetumal, Quintana Roo">Chetumal, Quintana Roo</option>
+                                            <option value="San Luis Potosí, San Luis Potosí">San Luis Potosí, San Luis Potosí</option>
+                                            <option value="Culiacán, Sinaloa">Culiacán, Sinaloa</option>
+                                            <option value="Hermosillo, Sonora">Hermosillo, Sonora</option>
+                                            <option value="Villahermosa, Tabasco">Villahermosa, Tabasco</option>
+                                            <option value="Ciudad Victoria, Tamaulipas">Ciudad Victoria, Tamaulipas</option>
+                                            <option value="Tlaxcala, Tlaxcala">Tlaxcala, Tlaxcala</option>
+                                            <option value="Xalapa, Veracruz">Xalapa, Veracruz</option>
+                                            <option value="Mérida, Yucatán">Mérida, Yucatán</option>
+                                            <option value="Zacatecas, Zacatecas">Zacatecas, Zacatecas</option>
+                                        </select>
+                                        <div class="invalid-feedback">
+                                            Por favor, seleccione una ciudad.
+                                        </div>
+                                    </div>
+
+                                    <div class='form-group'>
+                                        <label for='direccion'>Dirección de la empresa</label>
+                                        <input required type='text' name='direccion' id='direccion' class="form-control">
+                                        <div class="invalid-feedback">
+                                            Por favor, ingrese la dirección
+                                        </div>
+                                    </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                                         <button type='submit' class="btn btn-primary">Guardar</button>
@@ -253,7 +342,7 @@ function getRegistros($conexion) {
                         </div>
                     </div>
                 </div>
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#crear-giro-modal">Nuevo giro</button>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#crear-giro-modal">Nueva empresa</button>
             </div>
             <br>
 
