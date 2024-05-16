@@ -45,9 +45,24 @@ define('RUTA_INCLUDE', '../../'); //ajustar a necesidad
 
             <form action="" method="post">
                 <div class="form-row">
-                    <div class="form-group col-md-4">
-                        <label for="inputEmail4">Nombre o razón social de la empresa</label>
-                        <input type="email" class="form-control" id="inputEmail4" placeholder="Nombre o razón social de la empresa">
+                    <div class='form-group col-md-4'>
+                        <label for="giro">Nombre o razón social de la empresa</label>
+                        <select  required class="custom-select" id="giro" name="giro">
+                            <option selected value="">Seleccione empresa...</option>
+                            <?php
+                            $sql_select = "SELECT id,nombre FROM empresas";
+                            $res = mysqli_query($conexion, $sql_select);
+
+                            if ($res) {
+                                while ($row = mysqli_fetch_assoc($res)) {
+                                    echo '<option value=' . $row['id'] . '>' . $row['nombre'] . '</option>';
+                                }
+                            }
+                            ?>
+                        </select>
+                        <div class="invalid-feedback">
+                            Por favor, seleccione el giro.
+                        </div>
                     </div>
 
                     <div class='form-group col-md-4'>
