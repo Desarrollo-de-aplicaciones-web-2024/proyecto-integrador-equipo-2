@@ -30,25 +30,28 @@ if (!empty($nombre) && !empty($correo) && !empty($telefono) && !empty($giro) && 
         exit();
     }
     try {
-        $sql_delete = "UPDATE `empresas` SET `nombre` = '$nombre', `email` = '$correo', `telefono` = '$telefono', `giro` = '$giro', `ciudad` = '$ciudad', `direccion` = '$direccion' WHERE `empresas`.`id` = '$id'";
+        $sql_insert = "UPDATE `empresas` SET `nombre` = '$nombre', `email` = '$correo', `telefono` = '$telefono', `giro` = '$giro', `ciudad` = '$ciudad', `direccion` = '$direccion' WHERE `empresas`.`id` = '$id'";
         if (!mysqli_query($conexion, $sql_insert)) {
-            throw new Exception('No se logró crear el registro');
+            throw new Exception('No se logró actualizar el registro');
         }
         if (mysqli_affected_rows($conexion) > 0) { // Verificar si alguna fila fue afectada
             $_SESSION['status'] = 'exito';
-            $_SESSION['mensaje'] = 'Registro creado con éxito';
+            $_SESSION['mensaje'] = 'Registro actualizado con éxito';
         } else {
             $_SESSION['status'] = 'error';
-            $_SESSION['mensaje'] = 'No se logró crear el registro';
+            $_SESSION['mensaje'] = 'No se logró actualizado el registro';
         }
     } catch (mysqli_sql_exception $e) { // Manejar excepciones específicas de MySQL
         if ($e->getCode() == 1062) { // Error 1062: Entrada duplicada
             if (strpos($e->getMessage(), 'email') !== false) {
                 $_SESSION['status'] = 'error';
-                $_SESSION['mensaje'] = 'Error: El correo electrónico ya existe.';
+                $_SESSION['mensaje'] = 'El correo electrónico ya existe.';
             } elseif (strpos($e->getMessage(), 'telefono') !== false) {
                 $_SESSION['status'] = 'error';
-                $_SESSION['mensaje'] = 'Error: El número de teléfono ya existe.';
+                $_SESSION['mensaje'] = 'El número de teléfono ya existe.';
+            } elseif (strpos($e->getMessage(), 'nombre') !== false){
+                $_SESSION['status'] = 'error';
+                $_SESSION['mensaje'] = 'Ya hay una empresa con el nombre '.$nombre;
             } else {
                 $_SESSION['status'] = 'error';
                 $_SESSION['mensaje'] = 'Error: Entrada duplicada.';

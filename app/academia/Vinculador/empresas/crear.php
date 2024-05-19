@@ -48,7 +48,10 @@ if (!empty($nombre) && !empty($correo) && !empty($telefono) && !empty($giro) && 
             } elseif (strpos($e->getMessage(), 'telefono') !== false) {
                 $_SESSION['status'] = 'error';
                 $_SESSION['mensaje'] = 'Error: El número de teléfono ya existe.';
-            } else {
+            } elseif (strpos($e->getMessage(), 'nombre') !== false){
+                $_SESSION['status'] = 'error';
+                $_SESSION['mensaje'] = 'Ya hay una empresa con el nombre '.$nombre;
+            }else {
                 $_SESSION['status'] = 'error';
                 $_SESSION['mensaje'] = 'Error: Entrada duplicada.';
             }
