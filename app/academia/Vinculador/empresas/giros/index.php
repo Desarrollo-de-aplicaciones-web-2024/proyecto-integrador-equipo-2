@@ -21,12 +21,15 @@ function getRegistros($conexion) {
         echo '
           <div class="table-responsive mb-3">
                 <table class="table table-bordered dataTable">
+                <thead>
                 <tr>
                     <th>ID</th>
                     <th>Nombre</th>
                     <th>Descripción</th>
                     <th>Acciones</th>
-                </tr>';
+                </tr>
+                 </thead>
+                ';
         while ($row = mysqli_fetch_assoc($res)) {
             $editModal = 'editModal' . $row['id']; // ID único para el modal
             $deleteModal = 'deleteModal' . $row['id']; // ID único para el modal

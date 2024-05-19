@@ -10,7 +10,42 @@ $mensaje = isset($_SESSION['mensaje']) ? $_SESSION['mensaje'] : null;
 // Limpiar los datos recibidos
 unset($_SESSION['status']);
 unset($_SESSION['mensaje']);
-function getRegistros($conexion) {
+
+$ciudades = [
+    'Aguascalientes, Aguascalientes',
+    'Mexicali, Baja California',
+    'La Paz, Baja California Sur',
+    'Campeche, Campeche',
+    'Saltillo, Coahuila',
+    'Colima, Colima',
+    'Tuxtla Gutiérrez, Chiapas',
+    'Chihuahua, Chihuahua',
+    'Durango, Durango',
+    'Guanajuato, Guanajuato',
+    'Acapulco, Guerrero',
+    'Pachuca, Hidalgo',
+    'Guadalajara, Jalisco',
+    'Toluca, Estado de México',
+    'Morelia, Michoacán',
+    'Cuernavaca, Morelos',
+    'Tepic, Nayarit',
+    'Monterrey, Nuevo León',
+    'Oaxaca, Oaxaca',
+    'Puebla, Puebla',
+    'Querétaro, Querétaro',
+    'Chetumal, Quintana Roo',
+    'San Luis Potosí, San Luis Potosí',
+    'Culiacán, Sinaloa',
+    'Hermosillo, Sonora',
+    'Villahermosa, Tabasco',
+    'Ciudad Victoria, Tamaulipas',
+    'Tlaxcala, Tlaxcala',
+    'Xalapa, Veracruz',
+    'Mérida, Yucatán',
+    'Zacatecas, Zacatecas'
+];
+
+function getRegistros($conexion, $ciudades) {
 
     $sql_select = "SELECT empresas.id,empresas.nombre, empresas.email, empresas.telefono, empresas.giro, empresas.ciudad, empresas.direccion, giros.nombre AS nombre_giro from empresas LEFT JOIN giros ON empresas.giro = giros.id;";
     $res = mysqli_query($conexion, $sql_select);
@@ -20,6 +55,7 @@ function getRegistros($conexion) {
         echo '
           <div class="table-responsive mb-3">
                 <table class="table table-bordered dataTable">
+                <thead>
                 <tr>
                     <th>ID</th>
                     <th>Nombre</th>
@@ -30,7 +66,9 @@ function getRegistros($conexion) {
                     <th>Direción</th>
                     <th>Acciones</th>
                     
-                </tr>';
+                </tr>
+                  </thead>
+                ';
         while ($row = mysqli_fetch_assoc($res)) {
             $editModal = 'editModal' . $row['id']; // ID único para el modal
             $deleteModal = 'deleteModal' . $row['id']; // ID único para el modal
@@ -75,34 +113,135 @@ function getRegistros($conexion) {
                                     <label for='correo-modal-" . $row['id'] . "' class='col-form-label'>Correo electrónico</label>
                                     <input type='text' required name='correo' class='form-control' id='correo-modal-" . $row['id'] . "' value='" . htmlspecialchars($row['email']) . "'>
                                 </div>
+                               <div class='form-group'>
+                                    <label for='telefono-modal-" . $row['id'] . "' class='col-form-label'>Teléfono de contacto</label>
+                                    <input type='text' required name='telefono' class='form-control' id='telefono-modal-" . $row['id'] . "' value='" . htmlspecialchars($row['telefono']) . "'>
+                                </div>
+                                
+                                <div class='form-group'>
+                                    <label for='giro'>Giro de la empresa</label>
+                                    <select  required class='custom-select' id='giro-modal-" . $row['id'] . "' name='giro'>
+                                        
+                                        ";
+
+            $sql_giros = "SELECT id,nombre FROM giros";
+            $res_giros = mysqli_query($conexion, $sql_giros);
+            if ($res_giros) {
+                while ($row_giros = mysqli_fetch_assoc($res_giros)) {
+                    if ($row_giros['nombre'] === $row['nombre_giro']) {
+                        echo '<option selected value=' . $row_giros['id'] . '>' . $row_giros['nombre'] . '</option>';
+                    }
+                    echo '<option value=' . $row_giros['id'] . '>' . $row_giros['nombre'] . '</option>';
+                }
+            }
+
+            echo "
+                                    </select>
+                                    <div class='invalid-feedback'>
+                                        Por favor, seleccione el giro.
+                                    </div>
+                                </div>
+                                
+                                <div class='form-group'>
+                                    <label for='ciudad'>Ciudad</label>
+                                    <select required name='ciudad' id='ciudad-modal-" . $row['id'] . "' class='custom-select'>
+                                    ";
+
+            foreach ($ciudades as $ciudad) {
+                if ($ciudad === $row['ciudad']) {
+                    echo "<option selected value='$$ciudad'>$ciudad</option>";
+                }
+                echo "<option value='$ciudad'>$ciudad</option>";
+            }
+
+            echo "
+                                    </select>
+                                    <div class='invalid-feedback'>
+                                        Por favor, seleccione una ciudad.
+                                    </div>
+                                </div>
+                            
+                                <div class='form-group'>
+                                    <label for='direccion-modal-" . $row['id'] . "' class='col-form-label'>Dirección</label>
+                                    <input required name='direccion' type='text' class='form-control' id='direccion-modal-" . $row['id'] . "' value='" . htmlspecialchars($row['direccion']) . "'>
+                                </div>
+
+                                        
+                                
                                 <div class='modal-footer'>
                                     <button type='button' class='btn btn-secondary' data-dismiss='modal'>Cerrar</button>
-                                    <button type='button' class='btn btn-primary' onclick='editar(". $row['id'] . ")'>Guardar</button>
+                                    <button type='submit' class='btn btn-primary' onclick='editar(". $row['id'] . ")'>Guardar</button>
                                 </div>
+                                
                             </form>
                         </div>
                     </div>
                 </div>
-            </div>";
+            </div>
+                
+            ";
+
 
             echo "<script>
                 function editar(id) {
-                
                     var nombre = document.getElementById('nombre-modal-' + id);
-                    var descripcion = document.getElementById('correo-modal-' + id);
-                
-                    // Verificar si los campos están vacíos
-                    if (nombre.value.trim() === '' || descripcion.value.trim() === '') {
-                        if (nombre.value.trim() === '') {
-                            nombre.classList.add('is-invalid');
-                        }
-                        if (descripcion.value.trim() === '') {
-                            descripcion.classList.add('is-invalid');
-                        }
-                
-                        //alert('Por favor, complete todos los campos.');
-                        return; 
-                }
+                    var correo = document.getElementById('correo-modal-' + id);
+                    var telefono = document.getElementById('telefono-modal-' + id);
+                    var telefonoPattern = /^\+?[0-9\s\-\(\)]{10,15}$/;
+                    var direccion = document.getElementById('direccion-modal-' + id);
+                    var giro = document.getElementById('giro-modal-' + id);
+                    var ciudad = document.getElementById('ciudad-modal-' + id);
+                    
+                    
+                    
+                    if (nombre.value.trim() === '') {
+                        nombre.classList.add('is-invalid');
+                        nombre.classList.remove('is-valid');
+                    } else {
+                        nombre.classList.remove('is-invalid');
+                        nombre.classList.add('is-valid'); 
+                    }
+                    
+                    if (correo.value.trim() === '') {
+                        correo.classList.add('is-invalid');
+                        correo.classList.remove('is-valid');
+                    } else {
+                        correo.classList.remove('is-invalid');
+                        correo.classList.add('is-valid'); 
+                    }
+                    
+                    if (telefono.value.trim() === '' || !telefonoPattern.test(telefono.value)) {
+                        telefono.classList.add('is-invalid');
+                        telefono.classList.remove('is-valid');
+                    } else {
+                        telefono.classList.remove('is-invalid');
+                        telefono.classList.add('is-valid');
+                    }
+                    
+                    if (giro.value.trim() === '') {
+                        giro.classList.add('is-invalid');
+                        giro.classList.remove('is-valid');
+                    } else {
+                        giro.classList.remove('is-invalid');
+                        giro.classList.add('is-valid'); 
+                    }
+                    
+                    if (ciudad.value.trim() === '') {
+                        ciudad.classList.add('is-invalid');
+                        ciudad.classList.remove('is-valid');
+                    } else {
+                        ciudad.classList.remove('is-invalid');
+                        ciudad.classList.add('is-valid'); 
+                    }
+                    
+                    if (direccion.value.trim() === '') {
+                        direccion.classList.add('is-invalid');
+                        direccion.classList.remove('is-valid');
+                    } else {
+                        direccion.classList.remove('is-invalid');
+                        direccion.classList.add('is-valid'); 
+                    }
+                    
             }
 
             </script>";
@@ -288,37 +427,11 @@ function getRegistros($conexion) {
                                         <select required name='ciudad' id='ciudad' class="custom-select"
                                         >
                                             <option value="">Seleccione una ciudad</option>
-                                            <option value="Aguascalientes, Aguascalientes">Aguascalientes, Aguascalientes</option>
-                                            <option value="Mexicali, Baja California">Mexicali, Baja California</option>
-                                            <option value="La Paz, Baja California Sur">La Paz, Baja California Sur</option>
-                                            <option value="Campeche, Campeche">Campeche, Campeche</option>
-                                            <option value="Saltillo, Coahuila">Saltillo, Coahuila</option>
-                                            <option value="Colima, Colima">Colima, Colima</option>
-                                            <option value="Tuxtla Gutiérrez, Chiapas">Tuxtla Gutiérrez, Chiapas</option>
-                                            <option value="Chihuahua, Chihuahua">Chihuahua, Chihuahua</option>
-                                            <option value="Durango, Durango">Durango, Durango</option>
-                                            <option value="Guanajuato, Guanajuato">Guanajuato, Guanajuato</option>
-                                            <option value="Acapulco, Guerrero">Acapulco, Guerrero</option>
-                                            <option value="Pachuca, Hidalgo">Pachuca, Hidalgo</option>
-                                            <option value="Guadalajara, Jalisco">Guadalajara, Jalisco</option>
-                                            <option value="Toluca, Estado de México">Toluca, Estado de México</option>
-                                            <option value="Morelia, Michoacán">Morelia, Michoacán</option>
-                                            <option value="Cuernavaca, Morelos">Cuernavaca, Morelos</option>
-                                            <option value="Tepic, Nayarit">Tepic, Nayarit</option>
-                                            <option value="Monterrey, Nuevo León">Monterrey, Nuevo León</option>
-                                            <option value="Oaxaca, Oaxaca">Oaxaca, Oaxaca</option>
-                                            <option value="Puebla, Puebla">Puebla, Puebla</option>
-                                            <option value="Querétaro, Querétaro">Querétaro, Querétaro</option>
-                                            <option value="Chetumal, Quintana Roo">Chetumal, Quintana Roo</option>
-                                            <option value="San Luis Potosí, San Luis Potosí">San Luis Potosí, San Luis Potosí</option>
-                                            <option value="Culiacán, Sinaloa">Culiacán, Sinaloa</option>
-                                            <option value="Hermosillo, Sonora">Hermosillo, Sonora</option>
-                                            <option value="Villahermosa, Tabasco">Villahermosa, Tabasco</option>
-                                            <option value="Ciudad Victoria, Tamaulipas">Ciudad Victoria, Tamaulipas</option>
-                                            <option value="Tlaxcala, Tlaxcala">Tlaxcala, Tlaxcala</option>
-                                            <option value="Xalapa, Veracruz">Xalapa, Veracruz</option>
-                                            <option value="Mérida, Yucatán">Mérida, Yucatán</option>
-                                            <option value="Zacatecas, Zacatecas">Zacatecas, Zacatecas</option>
+                                             <?php
+                                             foreach ($ciudades as $ciudad) {
+                                                 echo "<option value='$$ciudad'>$ciudad</option>";
+                                             }
+                                             ?>
                                         </select>
                                         <div class="invalid-feedback">
                                             Por favor, seleccione una ciudad.
@@ -346,7 +459,7 @@ function getRegistros($conexion) {
             </div>
             <br>
 
-            <?php getRegistros($conexion); ?>
+            <?php getRegistros($conexion, $ciudades); ?>
 
         </div>
         <?php getFooter() ?>
