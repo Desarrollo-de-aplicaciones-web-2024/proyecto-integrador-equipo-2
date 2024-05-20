@@ -83,8 +83,8 @@ define('RUTA_INCLUDE', '../../../');
                             <td><?php echo $alumno[3] ?></td>
                             <td><?php echo 'Intellia' ?></td>
                             <td>
-                                <a href="#" class="text-decoration-none" style="color: unset;"><i class="fas fa-file text-secondary" style=""></i></a>
-                                <a href="#" class="text-decoration-none" style="color: unset;"><i class="fas fa-file text-primary"></i></a>
+                                <a href="documentoDetalle.php" class="text-decoration-none" style="color: unset;"><i class="fas fa-file text-secondary" style=""></i></a>
+                                <a href="documentoDetalle.php" class="text-decoration-none" style="color: unset;"><i class="fas fa-file text-primary"></i></a>
                             </td>
                             <td><?php echo 'Mensual' ?></td>
                             <td>
