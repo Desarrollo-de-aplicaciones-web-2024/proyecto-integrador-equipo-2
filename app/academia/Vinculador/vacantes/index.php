@@ -58,12 +58,34 @@ define('RUTA_INCLUDE', '../../../../'); //ajustar a necesidad
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Convocatoria</h5>
+                                    <h5 class="modal-title" id="exampleModalLabel">Datos de la convocatoria</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-
-                                </div>
+                                    <form>
+                                        <div class="form-group row">
+                                            <label for="inputTitulo" class="col-sm-2 col-form-label">Título: </label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control" id="inputTitulo">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="inputDescripcion" class="col-sm-2 col-form-label">Descripción: </label>
+                                            <div class="col-sm-10">
+                                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="inputEmpresa" class="col-sm-2 col-form-label">Empresa: </label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control" id="inputEmpresa">
+                                            </div>
+                                        </div>
+                                        <div class="input-group is-invalid">
+                                            <div class="custom-file">
+                                                <input type="file" class="custom-file-input" id="validatedInputGroupCustomFile" required>
+                                                <label class="custom-file-label" for="validatedInputGroupCustomFile">Choose file...</label>
+                                            </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                                     <button type="button" class="btn btn-primary">Agregar</button>
