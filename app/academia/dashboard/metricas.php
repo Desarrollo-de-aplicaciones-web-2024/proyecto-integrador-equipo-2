@@ -1,6 +1,6 @@
 <?php
 require_once '../../../config/global.php';
-require_once '../../../app/consultas/empresas.php';
+require_once __DIR__ . '/../../consultas/empresas.php';
 
 define('RUTA_INCLUDE', '../../../');
 ?>

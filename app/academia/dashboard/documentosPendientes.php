@@ -100,10 +100,11 @@ define('RUTA_INCLUDE', '../../../');
         </div>
         <!-- /.container-fluid -->
 
-        <?php getFooter() ?>
-
     </div>
     <!-- /.content-wrapper -->
+
+
+    <?php getFooter() ?>
 
 </div>
 <!-- /#wrapper -->
