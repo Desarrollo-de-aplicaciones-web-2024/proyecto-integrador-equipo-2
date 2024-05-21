@@ -31,24 +31,46 @@ define('RUTA_INCLUDE', '../../../../'); //ajustar a necesidad
 
         <div class="container-fluid">
 
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item">Catálogos</li>
-                    <li class="breadcrumb-item active" aria-current="page">Nombre del catálogo</li>
-                </ol>
-            </nav>
+<!--            <nav aria-label="breadcrumb">-->
+<!--                <ol class="breadcrumb">-->
+<!--                    <li class="breadcrumb-item">Catálogos</li>-->
+<!--                    <li class="breadcrumb-item active" aria-current="page">Nombre del catálogo</li>-->
+<!--                </ol>-->
+<!--            </nav>-->
 
-            <div class="alert alert-success" role="alert">
-                <i class="fas fa-check"></i> Mensaje de éxito
-            </div>
-
-            <div class="alert alert-danger" role="alert">
-                <i class="fas fa-exclamation-triangle"></i> Mensaje de error
-            </div>
+<!--            <div class="alert alert-success" role="alert">-->
+<!--                <i class="fas fa-check"></i> Mensaje de éxito-->
+<!--            </div>-->
+<!---->
+<!--            <div class="alert alert-danger" role="alert">-->
+<!--                <i class="fas fa-exclamation-triangle"></i> Mensaje de error-->
+<!--            </div>-->
 
             <div class="row my-3">
                 <div class="col text-right">
-                    <button type="button" class="btn btn-primary"><i class="fas fa-plus"></i> Nuevo</button>
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                        + Agregar convocatoria
+                    </button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Convocatoria</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                    <button type="button" class="btn btn-primary">Agregar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -56,64 +78,49 @@ define('RUTA_INCLUDE', '../../../../'); //ajustar a necesidad
                 <table class="table table-bordered dataTable">
                     <thead>
                     <tr>
-                        <th>Nombre</th>
-                        <th>Puesto</th>
-                        <th>Oficina</th>
-                        <th>Edad</th>
-                        <th>Fecha de inicio</th>
-                        <th>Salario</th>
+                        <th>Empresa</th>
+                        <th>Fecha</th>
+                        <th>N° de vacantes</th>
+                        <th>Contacto</th>
                         <th>Acciones</th>
                     </tr>
                     </thead>
                     <tfoot>
                     <tr>
-                        <th>Nombre</th>
-                        <th>Puesto</th>
-                        <th>Oficina</th>
-                        <th>Edad</th>
-                        <th>Fecha de inicio</th>
-                        <th>Salario</th>
+                        <th>Empresa</th>
+                        <th>Fecha</th>
+                        <th>N° de vacantes</th>
+                        <th>Contacto</th>
                         <th>Acciones</th>
                     </tr>
                     </tfoot>
                     <tbody>
                     <tr>
-                        <td>Tiger Nixon</td>
-                        <td>System Architect</td>
-                        <td>Edinburgh</td>
-                        <td>61</td>
-                        <td>2011/04/25</td>
-                        <td>$320,800</td>
-                        <td><a href="#" class="btn btn-link btn-sm btn-sm">Editar</a> <a href="#" class="btn btn-link btn-sm">Eliminar</a></td>
-                    </tr>
-                    <tr>
-                        <td>Garrett Winters</td>
-                        <td>Accountant</td>
-                        <td>Tokyo</td>
-                        <td>63</td>
-                        <td>2011/07/25</td>
-                        <td>$170,750</td>
-                        <td><a href="#" class="btn btn-link btn-sm">Editar</a> <a href="#" class="btn btn-link btn-sm">Eliminar</a></td>
-                    </tr>
-                    <tr>
-                        <td>Ashton Cox</td>
-                        <td>Junior Technical Author</td>
-                        <td>San Francisco</td>
-                        <td>66</td>
-                        <td>2009/01/12</td>
-                        <td>$86,000</td>
-                        <td><a href="#" class="btn btn-link btn-sm">Editar</a> <a href="#" class="btn btn-link btn-sm">Eliminar</a></td>
-                    </tr>
-                    <tr>
-                        <td>Cedric Kelly</td>
-                        <td>Senior Javascript Developer</td>
-                        <td>Edinburgh</td>
-                        <td>22</td>
-                        <td>2012/03/29</td>
-                        <td>$433,060</td>
-                        <td><a href="#" class="btn btn-link btn-sm">Editar</a> <a href="#" class="btn btn-link btn-sm">Eliminar</a></td>
-                    </tr>
+                        <td>Intellia</td>
+                        <td>14 de marzo</td>
+                        <td>4</td>
+                        <td>contacto@gmail.com</td>
+                        <td>
+                            <a href="#" class="btn btn-link btn-sm btn-sm"><img src="/img/editar.png" width="20" height="20" alt="imagen editar" title="Editar"/>
+                                <a href="#" class="btn btn-link btn-sm"><img src="/img/eliminar.png" width="20" height="20" alt="imagen eliminar" title="Eliminar"</img></a>
+                        </td>
 
+                    </tr>
+                    <tr>
+                        <td>Tamsa</td>
+                        <td>20 de marzo</td>
+                        <td>Indefinido</td>
+                        <td>contacto@gmail.com</td>
+                        <td>
+                            <a href="#" class="btn btn-link btn-sm btn-sm">
+                                <img src="/img/editar.png" width="20" height="20" alt="imagen editar" title="Editar"/>
+                            </a>
+
+                                <a href="#" class="btn btn-link btn-sm">
+                                    <img src="/img/eliminar.png" width="20" height="20" alt="imagen eliminar" title="Eliminar"/>
+                                </a>
+                        </td>
+                    </tr>
                     </tbody>
                 </table>
             </div>
@@ -140,4 +147,3 @@ define('RUTA_INCLUDE', '../../../../'); //ajustar a necesidad
 </body>
 
 </html>
-
