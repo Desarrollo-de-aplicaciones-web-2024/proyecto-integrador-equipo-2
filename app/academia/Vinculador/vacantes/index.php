@@ -55,11 +55,10 @@ define('RUTA_INCLUDE', '../../../../'); //ajustar a necesidad
 
                     <!-- Modal -->
                     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
+                        <div class="modal-dialog modal-lg">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="exampleModalLabel">Datos de la convocatoria</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
                                     <form>
@@ -81,14 +80,43 @@ define('RUTA_INCLUDE', '../../../../'); //ajustar a necesidad
                                                 <input type="text" class="form-control" id="inputEmpresa">
                                             </div>
                                         </div>
-                                        <div class="input-group is-invalid">
-                                            <div class="custom-file">
-                                                <input type="file" class="custom-file-input" id="validatedInputGroupCustomFile" required>
-                                                <label class="custom-file-label" for="validatedInputGroupCustomFile">Choose file...</label>
+                                        <div class="form-group row">
+                                            <label for="exampleFormControlFile1" class="col-sm-2 col-form-label">Imagen: </label>
+                                            <div class="col-sm-10">
+                                                <input type="file" class="form-control-file" id="exampleFormControlFile1">
                                             </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="inputEmail" class="col-sm-2 col-form-label">Datos de contacto: </label>
+                                            <div class="col-sm-10">
+                                                <input type="email" class="form-control" id="inputEmail" placeholder="Correo electrónico">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="inputCarrera" class="col-sm-2 col-form-label">Perfiles: </label>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                                                    <label class="form-check-label" for="inlineCheckbox1">Sistemas Computacionales</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2">
+                                                    <label class="form-check-label" for="inlineCheckbox2">Telecomunicaciones</label>
+                                                </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="inputCantidadVacantes" class="col-sm-2 col-form-label">Cantidad de vacantes</label>
+                                            <select id="inputCantidadVacantes" class="col-sm-1">
+                                                <option>1</option>
+                                                <option>2</option>
+                                                <option>3</option>
+                                                <option>4</option>
+                                                <option>5</option>
+                                                <option>Indefinida</option>
+                                            </select>
+                                        </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                    <button type="button" class="btn btn-primary">Agregar</button>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                    <button type="button" class="btn btn-primary">Guardar</button>
                                 </div>
                             </div>
                         </div>
