@@ -49,12 +49,12 @@ define('RUTA_INCLUDE', '../../../../'); //ajustar a necesidad
             <div class="row my-3">
                 <div class="col text-right">
                     <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#nueva">
                         + Agregar convocatoria
                     </button>
 
                     <!-- Modal -->
-                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal fade" id="nueva" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-lg">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -63,50 +63,26 @@ define('RUTA_INCLUDE', '../../../../'); //ajustar a necesidad
                                 <div class="modal-body">
                                     <form>
                                         <div class="form-group row">
-                                            <label for="inputTitulo" class="col-sm-2 col-form-label">Título: </label>
+                                            <label for="inputTitulo" class="col-sm-2 col-form-label">Empresa: </label>
                                             <div class="col-sm-10">
-                                                <input type="text" class="form-control" id="inputTitulo">
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label for="inputDescripcion" class="col-sm-2 col-form-label">Descripción: </label>
-                                            <div class="col-sm-10">
-                                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label for="inputEmpresa" class="col-sm-2 col-form-label">Empresa: </label>
-                                            <div class="col-sm-10">
-                                                <input type="text" class="form-control" id="inputEmpresa">
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label for="exampleFormControlFile1" class="col-sm-2 col-form-label">Imagen: </label>
-                                            <div class="col-sm-10">
-                                                <input type="file" class="form-control-file" id="exampleFormControlFile1">
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label for="inputEmail" class="col-sm-2 col-form-label">Datos de contacto: </label>
-                                            <div class="col-sm-10">
-                                                <input type="email" class="form-control" id="inputEmail" placeholder="Correo electrónico">
+                                                <input type="text" class="form-control" id="inputTitulo" required>
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                             <label for="inputCarrera" class="col-sm-2 col-form-label">Perfiles: </label>
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-                                                    <label class="form-check-label" for="inlineCheckbox1">Sistemas Computacionales</label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2">
-                                                    <label class="form-check-label" for="inlineCheckbox2">Telecomunicaciones</label>
-                                                </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                                                <label class="form-check-label" for="inlineCheckbox1">Sistemas Computacionales</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2">
+                                                <label class="form-check-label" for="inlineCheckbox2">Telecomunicaciones</label>
+                                            </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label for="inputCantidadVacantes" class="col-sm-2 col-form-label">Cantidad de vacantes</label>
-                                            <select id="inputCantidadVacantes" class="col-sm-1">
-                                                <option>1</option>
+                                            <label for="inputCantidadVacantes" class="col-sm-2 col-form-label">Vacantes disponibles: </label>
+                                            <select id="inputCantidadVacantes" class="col-sm-2" required>
+                                                <option selected disabled value="">Selecciona</option>
                                                 <option>2</option>
                                                 <option>3</option>
                                                 <option>4</option>
@@ -114,9 +90,21 @@ define('RUTA_INCLUDE', '../../../../'); //ajustar a necesidad
                                                 <option>Indefinida</option>
                                             </select>
                                         </div>
+                                        <div class="form-group row">
+                                            <label for="inputEmail" class="col-sm-2 col-form-label">Contacto: </label>
+                                            <div class="col-sm-10">
+                                                <input type="email" class="form-control" id="inputEmail" placeholder="Correo electrónico" required>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="exampleFormControlFile1" class="col-sm-2 col-form-label">Imagen: </label>
+                                            <div class="col-sm-10">
+                                                <input type="file" class="form-control-file" id="exampleFormControlFile1" required>
+                                            </div>
+                                        </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                    <button type="button" class="btn btn-primary">Guardar</button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                    <button type="submit" class="btn btn-primary">Guardar</button>
                                 </div>
                             </div>
                         </div>
@@ -129,46 +117,214 @@ define('RUTA_INCLUDE', '../../../../'); //ajustar a necesidad
                     <thead>
                     <tr>
                         <th>Empresa</th>
-                        <th>Fecha</th>
+                        <th>Perfiles</th>
                         <th>N° de vacantes</th>
-                        <th>Contacto</th>
+                        <th>Datos de contacto</th>
+                        <th>Imagen</th>
                         <th>Acciones</th>
                     </tr>
                     </thead>
                     <tfoot>
                     <tr>
                         <th>Empresa</th>
-                        <th>Fecha</th>
+                        <th>Perfiles</th>
                         <th>N° de vacantes</th>
-                        <th>Contacto</th>
+                        <th>Datos de contacto</th>
+                        <th>Imagen</th>
                         <th>Acciones</th>
                     </tr>
                     </tfoot>
                     <tbody>
                     <tr>
                         <td>Intellia</td>
-                        <td>14 de marzo</td>
+                        <td>Sistemas computacionales</td>
                         <td>4</td>
                         <td>contacto@gmail.com</td>
                         <td>
-                            <a href="#" class="btn btn-link btn-sm btn-sm"><img src="/img/editar.png" width="20" height="20" alt="imagen editar" title="Editar"/>
-                                <a href="#" class="btn btn-link btn-sm"><img src="/img/eliminar.png" width="20" height="20" alt="imagen eliminar" title="Eliminar"</img></a>
-                        </td>
 
+                        </td>
+                        <td>
+                            <div>
+                                <!-- Button trigger modal -->
+                                <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#editar" >
+                                    Editar
+                                </button>
+
+                                <!-- Modal -->
+                                <div class="modal fade" id="editar" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Editar convocatoria</h5>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form>
+                                                    <div class="form-group row">
+                                                        <label for="inputTitulo" class="col-sm-2 col-form-label">Empresa: </label>
+                                                        <div class="col-sm-10">
+                                                            <input type="text" class="form-control" id="inputTitulo" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label for="inputCarrera" class="col-sm-2 col-form-label">Perfiles: </label>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                                                            <label class="form-check-label" for="inlineCheckbox1">Sistemas Computacionales</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2">
+                                                            <label class="form-check-label" for="inlineCheckbox2">Telecomunicaciones</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label for="inputCantidadVacantes" class="col-sm-2 col-form-label">Vacantes disponibles: </label>
+                                                        <select id="inputCantidadVacantes" class="col-sm-2" required>
+                                                            <option selected disabled value="">Selecciona</option>
+                                                            <option>2</option>
+                                                            <option>3</option>
+                                                            <option>4</option>
+                                                            <option>5</option>
+                                                            <option>Indefinida</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label for="inputEmail" class="col-sm-2 col-form-label">Contacto: </label>
+                                                        <div class="col-sm-10">
+                                                            <input type="email" class="form-control" id="inputEmail" placeholder="Correo electrónico" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label for="exampleFormControlFile1" class="col-sm-2 col-form-label">Imagen: </label>
+                                                        <div class="col-sm-10">
+                                                            <input type="file" class="form-control-file" id="exampleFormControlFile1" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                                        <button type="submit" class="btn btn-primary">Guardar</button>
+                                                    </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <!-- Button trigger modal -->
+                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#eliminar" >
+                                    Eliminar
+                                </button>
+                                <!-- Modal -->
+                                <div class="modal fade" id="eliminar" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-body">
+                                                <h3>¿Desea eliminar esta convocatoria?</h3>
+                                                <p>No podrá deshacer los cambios.</p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                                <button type="submit" class="btn btn-danger">Eliminar</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
                     </tr>
                     <tr>
                         <td>Tamsa</td>
-                        <td>20 de marzo</td>
+                        <td>Sistemas computacionales<br>Telecomunicaciones</td>
                         <td>Indefinido</td>
                         <td>contacto@gmail.com</td>
                         <td>
-                            <a href="#" class="btn btn-link btn-sm btn-sm">
-                                <img src="/img/editar.png" width="20" height="20" alt="imagen editar" title="Editar"/>
-                            </a>
+                            aaa
+                        </td>
+                        <td>
+                            <div>
+                                <!-- Button trigger modal -->
+                                <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#editar" >
+                                    Editar
+                                </button>
 
-                                <a href="#" class="btn btn-link btn-sm">
-                                    <img src="/img/eliminar.png" width="20" height="20" alt="imagen eliminar" title="Eliminar"/>
-                                </a>
+                                <!-- Modal -->
+                                <div class="modal fade" id="editar" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Editar convocatoria</h5>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form>
+                                                    <div class="form-group row">
+                                                        <label for="inputTitulo" class="col-sm-2 col-form-label">Empresa: </label>
+                                                        <div class="col-sm-10">
+                                                            <input type="text" class="form-control" id="inputTitulo" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label for="inputCarrera" class="col-sm-2 col-form-label">Perfiles: </label>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                                                            <label class="form-check-label" for="inlineCheckbox1">Sistemas Computacionales</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2">
+                                                            <label class="form-check-label" for="inlineCheckbox2">Telecomunicaciones</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label for="inputCantidadVacantes" class="col-sm-2 col-form-label">Vacantes disponibles: </label>
+                                                        <select id="inputCantidadVacantes" class="col-sm-2" required>
+                                                            <option selected disabled value="">Selecciona</option>
+                                                            <option>2</option>
+                                                            <option>3</option>
+                                                            <option>4</option>
+                                                            <option>5</option>
+                                                            <option>Indefinida</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label for="inputEmail" class="col-sm-2 col-form-label">Contacto: </label>
+                                                        <div class="col-sm-10">
+                                                            <input type="email" class="form-control" id="inputEmail" placeholder="Correo electrónico" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label for="exampleFormControlFile1" class="col-sm-2 col-form-label">Imagen: </label>
+                                                        <div class="col-sm-10">
+                                                            <input type="file" class="form-control-file" id="exampleFormControlFile1" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                                        <button type="submit" class="btn btn-primary">Guardar</button>
+                                                    </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <!-- Button trigger modal -->
+                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#eliminar" >
+                                    Eliminar
+                                </button>
+                                <!-- Modal -->
+                                <div class="modal fade" id="eliminar" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-body">
+                                                <h3>¿Desea eliminar esta convocatoria?</h3>
+                                                <p>No podrá deshacer los cambios.</p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                                <button type="submit" class="btn btn-danger">Eliminar</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </td>
                     </tr>
                     </tbody>
