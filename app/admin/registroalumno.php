@@ -1,5 +1,6 @@
 <?php
 require_once '../../config/global.php';
+require '../../config/db.php';
 
 define('RUTA_INCLUDE', '../../'); //ajustar a necesidad
 ?>
@@ -45,30 +46,29 @@ define('RUTA_INCLUDE', '../../'); //ajustar a necesidad
         <!-- /.container-fluid -->
 
         <div class="container">
+            <form action="guardaralumno.php" method="post">
             <div class="row mb-5">
                 <div class="col">
-                    <button type="button" class="btn btn-success">Guardar</button>
+                    <button type="submit" class="btn btn-success">Guardar</button>
                 </div>
                 <div class="col text-right">
-                    <button type="button" class="btn btn-link">Cancelar</button>
+                    <button type="reset" class="btn btn-link">Cancelar</button>
                 </div>
             </div>
 
-            <form>
+
                 <div class="form-row">
                     <div class="form-group col-md-2">
                         <label for="inputMatricula">Matrícula</label>
-                        <input type="text" class="form-control" id="inputEmail4">
+                        <input type="text" class="form-control" id="matricula" name="matricula">
                     </div>
                     <div class="form-group col-md-6">
                         <label for="inputNombre">Nombre</label>
-                        <input type="text" class="form-control" id="inputPassword4">
+                        <input type="text" class="form-control" id="nombre" name="nombre">
                     </div>
-                </div>
-                <div class="form-group">
-                    <div class="form-group col-md-1">
+                    <div class="form-group col-md-2">
                     <label for="inputSexo">Sexo</label>
-                    <select id="inputSemestre" class="form-control">
+                    <select id="inputSemestre" class="form-control" id="sexo" name="sexo">
                         <option selected>H</option>
                         <option>M</option>
                     </select>
@@ -77,29 +77,34 @@ define('RUTA_INCLUDE', '../../'); //ajustar a necesidad
                 <div class="form-row">
                     <div class="form-group col-md-3.5">
                         <label for="inputCarrera">Carrera</label>
-                        <select id="inputCarrera" class="form-control">
-                            <option selected>Ing. en Sistemas Computacionales</option>
-                            <option>Telecomunicaciones</option>
+                        <select id="inputCarrera" class="form-control" id="carrera" name="carrera">
+                            <option selected>Ingeniería en Sistemas Computacionales</option>
+                            <option>Ingeniería en Redes y Telecomunicaciones</option>
+                            <option>Actuaría</option>
+                            <option>Arquitectura</option>
+                            <option>Ingeniería Industrial</option>
+                            <option>Ingeniería Petrolera</option>
+                            <option>Ingeniería Biomédica</option>
+                            <option>Ingeniería Mecatrónica</option>
+                            <option>Elpepe</option>
                         </select>
                     </div>
-                    <div class="form-group col-md-2">
-                    <label for="inputCampus">Campus</label>
-                    <select id="inputSemestre" class="form-control">
-                        <option selected>Calazans</option>
-                        <option>Torrente</option>
-                    </select>
-                    </div>
-                </div>
-                <div class="form-row">
                     <div class="form-group col-md-1">
                         <label for="inputSemestre">Semestre</label>
-                        <select id="inputSemestre" class="form-control">
-                            <option selected>3°</option>
-                            <option>4°</option>
+                        <select id="inputSemestre" class="form-control" id="semestre" name="semestre">
+                            <option selected>4</option>
+                            <option>5</option>
+                            <option>6</option>
+                            <option>7</option>
+                            <option>8</option>
+                            <option>9</option>
+                            <option>10</option>
                         </select>
                     </div>
-
-
+                    <div class="form-group col-md-4">
+                        <label for="password">Contraseña</label>
+                        <input type="password" name="password" id="password" class="form-control">
+                    </div>
                 </div>
             </form>
         </div>
