@@ -25,20 +25,20 @@
 <div>
     <div class="card card-login mx-auto border-light mb-3">
         <img src="../img/Logo.png" class="card-img">
-            <form>
+            <form action="login.php" method="post">
                 <div class="row g-0"">
                     <div  class="card-body">
                         <div class="form-group">
                             <div class="form-label-group">
-                                <p>Correo Institucional</p>
-                                <input type="email" id="inputEmail" class="form-control-sm" required="required" autofocus="autofocus"
+                                <p>Matrícula</p>
+                                <input type="text" id="matricula" name="matricula" class="form-control-sm"
                                 style="border-radius: 15px; height: 35px;">
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="form-label-group">
                                 <p>Contraseña</p>
-                                <input type="password" id="inputPassword" class="form-control-sm" required="required"
+                                <input type="password" id="pass" name="pass" class="form-control-sm"
                                 style="border-radius: 15px; height: 35px;">
                             </div>
                         </div>
@@ -46,11 +46,10 @@
                 <div class="row g-0">
                         <div class="card-body">
                             <br><br><br>
-                            <a type="button" class="btn btn-primary"
-                               style=" background-color:#0D0835; border-radius: 12px; width: 160px;" href="index.php" role="button">
+                            <button type="submit" class="btn btn-primary"
+                               style=" background-color:#0D0835; border-radius: 12px; width: 160px;" href="login.php" role="button">
                                 Iniciar sesión
-                            </a>
-                            <!-- <a class="btn btn-secondary btn-block" href="registrar.php">Registro</a>-->
+                            </button>
                             </form>
                             <div class="text-center">
                                 <a class="d-block small mt-3" href="recuperar.php">Recuperar contraseña</a>
