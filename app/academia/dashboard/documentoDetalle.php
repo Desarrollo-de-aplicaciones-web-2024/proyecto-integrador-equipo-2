@@ -58,8 +58,8 @@ define('RUTA_INCLUDE', '../../../');
                             </div>
                         </div>
                         <div class="mt-3 block btn-group w-100">
-                            <button class="btn btn-danger">Rechazar</button>
-                            <button class="btn btn-success">Aprobar</button>
+                            <button class="btn btn-danger" data-toggle="modal" data-target="#modalRechazar">Rechazar</button>
+                            <button class="btn btn-success" data-toggle="modal" data-target="#modalAprobar">Aprobar</button>
                         </div>
                     </div>
                 </div>
@@ -82,6 +82,51 @@ define('RUTA_INCLUDE', '../../../');
 
     </div>
     <!-- /.content-wrapper -->
+
+    <!-- Modal -->
+    <div class="modal fade" id="modalRechazar" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered " role="document">
+            <div class="modal-content p-3">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">¿Seguro de que desea rechazar este documento?</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body p-3">
+                    <p>Al rechazar este documento, el alumno deberá subir un nuevo documento.</p>
+
+                    <label for="rechazo">Motivo del rechazo</label>
+                    <textarea name="rechazo" id="rechazo" class="form-control" rows="3"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-danger">Rechazar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="modalAprobar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">¿Seguro de que desea aprobar este documento?</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Al aprobar este documento, el alumno podrá continuar con el proceso de prácticas profesionales.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-success">Aprobar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </div>
 <!-- /#wrapper -->
