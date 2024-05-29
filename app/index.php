@@ -1,3 +1,4 @@
+<?php define('RUTA_INCLUDE', '');?>
 <!DOCTYPE html>
 <html lang="es">
 

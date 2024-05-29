@@ -43,7 +43,7 @@ function getSidebar($ruta = ''){
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="{$ruta}tables.php">
+        <a class="nav-link" href="{$ruta}seguimiento-proceso.php">
             <i class="fas fa-fw fa-table"></i>
             <span>Tablas</span>
         </a>
@@ -58,7 +58,7 @@ function getNavbar($ruta = ''){
     $html = <<<EOD
 <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
 
-    <a class="navbar-brand mr-1" href="{$ruta}index.php">UCC</a>
+    <a class="navbar-brand mr-1" href=/app/index.php>UCC</a>
 
     <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
         <i class="fas fa-bars"></i>
