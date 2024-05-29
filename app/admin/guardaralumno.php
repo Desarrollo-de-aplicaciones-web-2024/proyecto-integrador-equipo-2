@@ -40,7 +40,8 @@ if(empty($matricula) || empty($nombre) || empty($sexo) || empty($semestre) || em
 }elseif($result == ''){
     $error = 'La carrera seleccionada no existe';
 }else{
-$sql ="insert into alumnos (matricula, nombre, sexo, semestre, password) values ('$matricula','$nombre','$sexo','$semestre','$password')";
+    $pass_en_md5 = md5($password);
+$sql ="insert into alumnos (matricula, nombre, sexo, semestre, password) values ('$matricula','$nombre','$sexo','$semestre','$pass_en_md5')";
 $sql2 = "insert into carrera_alumno (matricula_alumno, id_carrera) values ('$matricula','$carrera_id')";
     $resultado = mysqli_query($conexion, $sql);
 $stmt = $conexion->prepare($sql2);

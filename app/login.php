@@ -3,7 +3,9 @@ session_start();
 require '../config/db.php';
 $matricula = $_POST['matricula'];
 $pass = $_POST['pass'];
+$pass_en_md5 = md5($pass);
 $error = '';
+$resulta = 'a';
 $strmatri = (string)($matricula);
 //QUERY PARA ALUMNOS
 $matsql = "SELECT * from alumnos WHERE matricula = '$matricula'";
@@ -15,6 +17,7 @@ if ($stmt) {
         $row = $result->fetch_assoc();
         $_SESSION['matricula'] = $row['matricula'];
         $passverif = $row['password'];
+
     } else {
         $result = '';
     }
@@ -22,6 +25,7 @@ if ($stmt) {
     $stmt->close();
 }
 //QUERY PARA ACADEMICOS
+if($result == ''){
 $numesql = "SELECT * from academia WHERE numero_empleado = '$matricula'";
 $stmy = $conexion->prepare($numesql);
 if ($stmy) {
@@ -38,6 +42,7 @@ if ($stmy) {
     // Cerrar la declaración
     $stmy->close();
 }
+}
 
 if(empty($matricula) || empty($pass)){
  $error = "Llenar todos los campos";
@@ -51,7 +56,7 @@ if(empty($matricula) || empty($pass)){
 
 }elseif($result == ''){
     $error = 'La matricula seleccionada no existe';
-}elseif($pass != $passverif){
+}elseif($pass_en_md5 != $passverif){
     $error = "Contraseña incorrecta";
 }else {
     header('Location: alumnos/index.php');
@@ -60,7 +65,7 @@ if(empty($matricula) || empty($pass)){
 a:
 if($resulta == ''){
     $error = 'El usuario seleccionado no existe';
-}elseif($pass != $passverif){
+}elseif($pass_en_md5 != $passverif){
     $error = "Contraseña incorrecta";
 }else {
     switch ($puesto){
