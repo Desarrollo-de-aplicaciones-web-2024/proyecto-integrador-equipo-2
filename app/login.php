@@ -13,7 +13,7 @@ if ($stmt) {
     $result = $stmt->get_result();
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
-        $_SESSION['nombre'] = $row['nombre'];
+        $_SESSION['matricula'] = $row['matricula'];
         $passverif = $row['password'];
     } else {
         $result = '';
@@ -29,6 +29,7 @@ if ($stmy) {
     $resulta = $stmy->get_result();
     if ($resulta->num_rows > 0) {
         $row = $resulta->fetch_assoc();
+        $_SESSION['numero_empleado'] = $row['numero_empleado'];
         $passverif = $row['password'];
         $puesto = $row ['puesto'];
     } else {

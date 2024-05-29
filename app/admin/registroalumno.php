@@ -3,6 +3,8 @@ require_once '../../config/global.php';
 require '../../config/db.php';
 
 define('RUTA_INCLUDE', '../../'); //ajustar a necesidad
+$sql = "SELECT nombre FROM carreras";
+$result = $conexion->query($sql);
 ?>
 <html>
 <head>
@@ -78,15 +80,14 @@ define('RUTA_INCLUDE', '../../'); //ajustar a necesidad
                     <div class="form-group col-md-3.5">
                         <label for="inputCarrera">Carrera</label>
                         <select id="inputCarrera" class="form-control" id="carrera" name="carrera">
-                            <option selected>Ingeniería en Sistemas Computacionales</option>
-                            <option>Ingeniería en Redes y Telecomunicaciones</option>
-                            <option>Actuaría</option>
-                            <option>Arquitectura</option>
-                            <option>Ingeniería Industrial</option>
-                            <option>Ingeniería Petrolera</option>
-                            <option>Ingeniería Biomédica</option>
-                            <option>Ingeniería Mecatrónica</option>
-                            <option>Elpepe</option>
+                            <?php
+                            if ($result->num_rows > 0) {
+                                // Iterar sobre los resultados
+                                while($row = $result->fetch_assoc()) {
+                                    echo '<option value="' . $row["nombre"] . '">' . $row["nombre"] . '</option>';
+                                }
+                            }
+                            ?>
                         </select>
                     </div>
                     <div class="form-group col-md-1">

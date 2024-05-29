@@ -16,7 +16,6 @@ if ($stmt) {
     $result = $stmt->get_result();
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
-        // Guardar el ID en una variable
         $carrera_id = $row['id'];
     } else {
         $result = '';
