@@ -11,32 +11,21 @@ $dompdf = new Dompdf($options);
 
 $matricula = $_POST['matricula'];
 $id_empresa = $_POST['id-empresa'];
-$puesto = $_POST['puesto'];
-$duracion = $_POST['duracion'];
-$departamento = $_POST['departamento'];
 $horas = $_POST['horas'];
 $fecha_inicio = $_POST['fecha-inicio'];
-$fecha_inicio = $_POST['fecha-fin'];
+$horario_entrada = $_POST['horario-entrada'];
+$horario_salida = $_POST['horario-salida'];
+$actividades = $_POST['actividades'];
 $nombre_supervisor = $_POST['supervisor'];
-$puesto_supervisor = $_POST['puesto-supervisor'];
 $id_carrera = $_POST['id-carrera'];
-
-
-//estos 2 queries se podrian fusionar en 1 solo
-//falta validacion qeu rediriga con mensajes de error a carga-documentos-iniciales
 
 $sql_select_data = "SELECT c.nombre AS nombre_carrera, e.nombre AS nombre_empresa, e.email as email_empresa, e.telefono as telefono_empresa, e.ciudad as ciudad_empresa, e.direccion as direccion_empresa, a.nombre AS nombre_alumno, a.sexo as sexo_alumno, a.semestre as semestre_alumno FROM carreras c JOIN empresas e ON e.id = '$id_empresa'JOIN alumnos a ON a.matricula = '$matricula'WHERE c.id = '$id_carrera';";
 $res = mysqli_query($conexion, $sql_select_data);
 $res_data = mysqli_fetch_assoc($res);
-
-$nombre_carrera = $res_data['nombre_carrera'];
 $nombre_empresa = $res_data['nombre_empresa'];
-$direccion = $res_data['direccion_empresa'];
-$telefono = $res_data['telefono_empresa'];
-$correo = $res_data['email_empresa'];
 $nombre_alumno = $res_data['nombre_alumno'];
-$sexo_alumno = $res_data['sexo_alumno'] == 'M'? 'Hombre' : 'Mujer';
 $semestre_alumno = $res_data['semestre_alumno'];
+$nombre_carrera = $res_data['nombre_carrera'];
 
 $fecha = new DateTime();
 $fechaFormateada = $fecha->format('d/m/y');
@@ -76,6 +65,7 @@ $dia = intval($partes_fecha[2]);
 $mes = intval($partes_fecha[1]);
 $anio = $partes_fecha[0];
 
+// Imprime la fecha formateada en español
 //echo "<ul>
 //            <li>La fecha <b>$dia de {$meses[$mes]} de $anio</b></li>
 //            <li>siendo el día <b>$dia_del_anio</b></li>
@@ -87,7 +77,7 @@ $data = "
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Solicitud de inicio de prácticas profesionales</title>
+    <title>Plan de trabajo</title>
     <style>
         .titulo {
             width: 100%;
@@ -153,10 +143,9 @@ $data = "
             margin-bottom: 0;
             font-size: 20px;
             text-align: center;
-            background: #808181;
+            background: #dadada;
             border: 1px solid black;
             border-bottom: 0px;
-            color: white;
         }
         table {
             width: 100%;
@@ -190,6 +179,10 @@ $data = "
         .divider {
             width: 40px;
         }
+        
+        #noBordetop {
+            border-top: 0px;
+        }
 
     </style>
 </head>
@@ -200,97 +193,77 @@ $data = "
                 <img src='https://upload.wikimedia.org/wikipedia/commons/6/62/Logo_de_la_Universidad_Crist%C3%B3bal_Col%C3%B3n.svg' height='100px'>
             </td>
             <td>
-                <h1>$nombre_carrera<br><span>Solicitud para realización de Prácticas Profesionales</span></h1>
+                <h1>$nombre_carrera<br><span>Plan de Trabajo de Prácticas Profesionales</span></h1>
             </td>
         </tr>
     </table>
-
-
-    <table class='subtitle'>
-            <p><b>Mtro. Ramón Palet Naranjo</b></p>
-            <p>
-            <b>
-                Jefe Académico de las Licenciaturas en Ingeniería en Sistemas Computacionales, Ingeniería en Telecomunicaciones y Sistemas Electrónicos, Ingeniería Biónica e Ingeniería Mecatrónica.
-                Universidad Cristóbal Colón
-            </b>
-            </p>
-
-            <p>Por medio de la presente hago de su conocimiento mi deseo de realizar prácticas profesionales en la empresa que a continuación se detalla. Esto con el fin de fortalecer mi formación académica y vincularme con el medio laboral.</p>
-    </table>
-
-    <div class='section-title'>
-        <h1>Datos del alumno</h1>
-    </div>
-
+    
+    <br>
+    
     <table class='alumno'>
         <tr>
-            <th>1. Nombre:</th>
+            <th>1. Nombre</th>
             <td>$nombre_alumno</td>
-
-            <th>2. Matrícula:</th>
+            
+            <th>2. Matrícula</th>
             <td>$matricula</td>
         </tr>
+        
+        <br>
+        
         <tr>
-            <th>3. Licenciatura:</th>
+            <th>3. Licenciatura</th>
             <td>$nombre_carrera</td>
-
+            
              <th>4. Semestre</th>
             <td>$semestre_alumno</td>
         </tr>
-        <tr>
-            <th>5. E mail:</th>
-            <td>$correo</td>
-
-            <th>6. Sexo:</th>
-            <td>$sexo_alumno</td>
-        </tr>
-        
     </table>
-    <br>
-    <div class='section-title'>
-        <h1>Datos de la empresa</h1>
-    </div>
-    <table class='empresa'>
+    
+    <br>    
+
+    <table class='alumno'>
+        
         <tr>
-            <th>1. Nombre o razón social</th>
+            <th>5. Nombre de la empresa</th>
             <td>$nombre_empresa</td>
         </tr>
+        
         <tr>
-            <th>2. Domicilio</th>
-            <td>$direccion</td>
+            <th>6. Fecha de inicio de prácticas:</th>
+            <td>$fecha_inicio</td>
         </tr>
+        
         <tr>
-            <th>3. Teléfono</th>
-            <td>$telefono</td>
+            <th>7. Duración en horas (estimadas):</th>
+            <td>$horas</td>
         </tr>
+        
         <tr>
-            <th>4. E mail</th>
-            <td>$correo</td>
-        </tr>
-        <tr>
-            <th>5. Duración de las prácticas</th>
-            <td>$duracion horas</td>
-        </tr>
-        <tr>
-            <th>6. Puesto tentativo a desempeñar</th>
-            <td>$puesto</td>
-        </tr>
-        <tr>
-            <th>7. Departamento</th>
-            <td>$departamento</td>
-        </tr>
-        <tr>
-            <th>8. Nombre del supervisor directo</th>
-            <td>$nombre_supervisor</td>
-        </tr>
-        <tr>
-            <th>9. Puesto del supervisor directo</th>
-            <td>$puesto_supervisor</td>
+            <th>8. Horario:</th>
+            <td>$horario_entrada a $horario_salida</td>
         </tr>
     </table>
-
-    <p>Doy fe que los datos anteriores son fidedignos y me comprometo a cumplir con los lineamientos establecidos por la empresa, así como por el reglamento general de alumnos de la Universidad Cristóbal Colón.</p>
+    
+    <br>
+    
+    <div class='section-title'>
+        <table CLASS='alumno'>
+            <tr>
+                <th>9. Descripción general de las actividades a realizar:</th>
+            </tr>
+        </table>
+        <table class='alumno'>
+            <tr>
+                <td id='noBordetop'>$actividades</td> 
+            </tr>
+        </table>
+    </div>
+    
+    
+    <br>
     <p>H. Veracruz, Ver., a	    $dia	de	{$meses[$mes]}	de	$anio </p>
+   <br>
    <br>
     <table class='signatures-table'>
         <tr>
@@ -300,6 +273,8 @@ $data = "
                 <td id='alumno'><span >$nombre_supervisor</span><br><span>Supervisor</span></td>
             </td>
         </tr>
+   <br>
+   <br>
    <br>
    <br>
 

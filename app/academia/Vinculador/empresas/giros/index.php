@@ -23,7 +23,6 @@ function getRegistros($conexion) {
                 <table class="table table-bordered dataTable">
                 <thead>
                 <tr>
-                    <th>ID</th>
                     <th>Nombre</th>
                     <th>Descripción</th>
                     <th>Acciones</th>
@@ -36,7 +35,6 @@ function getRegistros($conexion) {
 
             echo '
                 <tr>
-                    <td>' . $row['id'] . '</td>
                     <td>' . $row['nombre'] . '</td>
                     <td>' . $row['descripcion'] . '</td>
                     <td>

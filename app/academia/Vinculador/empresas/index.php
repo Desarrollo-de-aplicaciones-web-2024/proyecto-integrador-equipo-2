@@ -12,38 +12,39 @@ unset($_SESSION['status']);
 unset($_SESSION['mensaje']);
 
 $ciudades = [
-    'Aguascalientes, Aguascalientes',
-    'Mexicali, Baja California',
-    'La Paz, Baja California Sur',
-    'Campeche, Campeche',
-    'Saltillo, Coahuila',
-    'Colima, Colima',
-    'Tuxtla Gutiérrez, Chiapas',
-    'Chihuahua, Chihuahua',
-    'Durango, Durango',
-    'Guanajuato, Guanajuato',
-    'Acapulco, Guerrero',
-    'Pachuca, Hidalgo',
-    'Guadalajara, Jalisco',
-    'Toluca, Estado de México',
-    'Morelia, Michoacán',
-    'Cuernavaca, Morelos',
-    'Tepic, Nayarit',
-    'Monterrey, Nuevo León',
-    'Oaxaca, Oaxaca',
-    'Puebla, Puebla',
-    'Querétaro, Querétaro',
-    'Chetumal, Quintana Roo',
-    'San Luis Potosí, San Luis Potosí',
-    'Culiacán, Sinaloa',
-    'Hermosillo, Sonora',
-    'Villahermosa, Tabasco',
-    'Ciudad Victoria, Tamaulipas',
-    'Tlaxcala, Tlaxcala',
-    'Xalapa, Veracruz',
-    'Mérida, Yucatán',
-    'Zacatecas, Zacatecas'
+    'Aguascalientes',
+    'Baja California',
+    'Baja California Sur',
+    'Campeche',
+    'Coahuila',
+    'Colima',
+    'Chiapas',
+    'Chihuahua',
+    'Durango',
+    'Guanajuato',
+    'Guerrero',
+    'Hidalgo',
+    'Jalisco',
+    'Estado de México',
+    'Michoacán',
+    'Morelos',
+    'Nayarit',
+    'Nuevo León',
+    'Oaxaca',
+    'Puebla',
+    'Querétaro',
+    'Quintana Roo',
+    'San Luis Potosí',
+    'Sinaloa',
+    'Sonora',
+    'Tabasco',
+    'Tamaulipas',
+    'Tlaxcala',
+    'Veracruz',
+    'Yucatán',
+    'Zacatecas'
 ];
+
 
 function getRegistros($conexion, $ciudades) {
 
@@ -57,12 +58,11 @@ function getRegistros($conexion, $ciudades) {
                 <table class="table table-bordered dataTable">
                 <thead>
                 <tr>
-                    <th>ID</th>
                     <th>Nombre</th>
                     <th>Correo</th>
                     <th>Teléfono</th>
                     <th>Giro</th>
-                    <th>Ciudad</th>
+                    <th>Estado</th>
                     <th>Direción</th>
                     <th>Acciones</th>
                     
@@ -77,7 +77,6 @@ function getRegistros($conexion, $ciudades) {
             //<td>' . (empty($row['vencimiento']) ? 'indefinido' : $row['vencimiento']). '</td>
             echo '
                 <tr>
-                    <td>' . $row['id'] . '</td>
                     <td>' . $row['nombre'] . '</td>
                     <td>' . $row['email'] . '</td>
                     <td>' . $row['telefono'] . '</td>
@@ -143,7 +142,7 @@ function getRegistros($conexion, $ciudades) {
                                 </div>
                                 
                                 <div class='form-group'>
-                                    <label for='ciudad'>Ciudad</label>
+                                    <label for='ciudad'>Estado</label>
                                     <select required name='ciudad' id='ciudad-modal-" . $row['id'] . "' class='custom-select'>
                                     ";
 
@@ -157,11 +156,11 @@ function getRegistros($conexion, $ciudades) {
             echo "
                                     </select>
                                     <div class='invalid-feedback'>
-                                        Por favor, seleccione una ciudad.
+                                        Por favor, seleccione un estado.
                                     </div>
                                 </div>
                             
-                                <div class='form-group'>
+                                ><div class='form-group'>
                                     <label for='direccion-modal-" . $row['id'] . "' class='col-form-label'>Dirección</label>
                                     <input required name='direccion' type='text' class='form-control' id='direccion-modal-" . $row['id'] . "' value='" . htmlspecialchars($row['direccion']) . "'>
                                 </div>
@@ -184,6 +183,18 @@ function getRegistros($conexion, $ciudades) {
 
             echo "<script>
                 function editar(id) {
+                    
+                    function clases(elemento,invalid) {
+                        
+                        if (invalid) {
+                            elemento.classList.add('is-invalid');
+                            elemento.classList.remove('is-valid');
+                        } else {
+                            elemento.classList.remove('is-invalid');
+                            elemento.classList.add('is-valid'); 
+                        }
+                    }
+                                
                     var nombre = document.getElementById('nombre-modal-' + id);
                     var correo = document.getElementById('correo-modal-' + id);
                     var telefono = document.getElementById('telefono-modal-' + id);
@@ -192,56 +203,12 @@ function getRegistros($conexion, $ciudades) {
                     var giro = document.getElementById('giro-modal-' + id);
                     var ciudad = document.getElementById('ciudad-modal-' + id);
                     
-                    
-                    
-                    if (nombre.value.trim() === '') {
-                        nombre.classList.add('is-invalid');
-                        nombre.classList.remove('is-valid');
-                    } else {
-                        nombre.classList.remove('is-invalid');
-                        nombre.classList.add('is-valid'); 
-                    }
-                    
-                    if (correo.value.trim() === '') {
-                        correo.classList.add('is-invalid');
-                        correo.classList.remove('is-valid');
-                    } else {
-                        correo.classList.remove('is-invalid');
-                        correo.classList.add('is-valid'); 
-                    }
-                    
-                    if (telefono.value.trim() === '' || !telefonoPattern.test(telefono.value)) {
-                        telefono.classList.add('is-invalid');
-                        telefono.classList.remove('is-valid');
-                    } else {
-                        telefono.classList.remove('is-invalid');
-                        telefono.classList.add('is-valid');
-                    }
-                    
-                    if (giro.value.trim() === '') {
-                        giro.classList.add('is-invalid');
-                        giro.classList.remove('is-valid');
-                    } else {
-                        giro.classList.remove('is-invalid');
-                        giro.classList.add('is-valid'); 
-                    }
-                    
-                    if (ciudad.value.trim() === '') {
-                        ciudad.classList.add('is-invalid');
-                        ciudad.classList.remove('is-valid');
-                    } else {
-                        ciudad.classList.remove('is-invalid');
-                        ciudad.classList.add('is-valid'); 
-                    }
-                    
-                    if (direccion.value.trim() === '') {
-                        direccion.classList.add('is-invalid');
-                        direccion.classList.remove('is-valid');
-                    } else {
-                        direccion.classList.remove('is-invalid');
-                        direccion.classList.add('is-valid'); 
-                    }
-                    
+                    nombre.value.trim() === '' ? clases(nombre,1) : clases(nombre,0);
+                    correo.value.trim() === '' ? clases(correo,1) : clases(correo,0);
+                    telefono.value.trim() === '' || !telefonoPattern.test(telefono.value) ? clases(telefono,1) : clases(telefono,0);
+                    giro.value.trim() === '' ? clases(giro,1) : clases(giro,0);
+                    ciudad.value.trim() === '' ? clases(ciudad,1) : clases(ciudad,0);
+                    direccion.value.trim() === '' ? clases(direccion,1) : clases(direccion,0);
             }
 
             </script>";
@@ -423,10 +390,10 @@ function getRegistros($conexion, $ciudades) {
                                     </div>
 
                                     <div class='form-group'>
-                                        <label for='ciudad'>Ciudad</label>
+                                        <label for='ciudad'>Estado</label>
                                         <select required name='ciudad' id='ciudad' class="custom-select"
                                         >
-                                            <option value="">Seleccione una ciudad</option>
+                                            <option value="">Seleccione un estado</option>
                                              <?php
                                              foreach ($ciudades as $ciudad) {
                                                  echo "<option value='$$ciudad'>$ciudad</option>";
