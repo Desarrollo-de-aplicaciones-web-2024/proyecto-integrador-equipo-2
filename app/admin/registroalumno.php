@@ -102,9 +102,15 @@ $result = $conexion->query($sql);
                             <option>10</option>
                         </select>
                     </div>
+                </div>
+                <div class="form-row">
                     <div class="form-group col-md-4">
                         <label for="password">Contraseña</label>
                         <input type="password" name="password" id="password" class="form-control">
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="password">Verificar contraseña</label>
+                        <input type="password" name="password2" id="password2" class="form-control">
                     </div>
                 </div>
             </form>
