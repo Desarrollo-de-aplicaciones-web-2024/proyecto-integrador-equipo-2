@@ -54,11 +54,11 @@ EOD;
     echo $html;
 }
 
-function getNavbar($ruta = ''){
+function getNavbar($ruta = '../../'){
     $html = <<<EOD
 <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
 
-    <a class="navbar-brand mr-1" href=/app/index.php>UCC</a>
+    <a class="navbar-brand mr-1" href="$ruta/index.php">UCC</a>
 
     <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
         <i class="fas fa-bars"></i>
@@ -92,7 +92,7 @@ function getNavbar($ruta = ''){
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
                 <a class="dropdown-item" href="#">Mi perfil</a>                
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">Salir</a>
+                <a class="dropdown-item" href="$ruta/login.php">Iniciar sesión</a>
             </div>
         </li>
     </ul>
@@ -101,6 +101,7 @@ EOD;
 
     echo $html;
 }
+
 
 function getFooter(){
     $anio_footer = date('Y');

@@ -79,7 +79,7 @@ mysqli_stmt_close($stmt);
                         <tr>
                             <td><?php echo $alumno[0]?></td>
                             <td><?php echo $alumno[1]?></td>
-                            <td><?php echo $alumno[2]?></td>
+                            <td><?php echo ($alumno[2] == 'M') ? 'Masculino' : 'Femenino'; ?></td>
                             <td><?php echo $alumno[3]?></td>
                             <td>
                                 <button type="button" class="btn btn-link btn-sm" onclick="mostrarDetalles('<?php echo $alumno[0]?>', '<?php echo $alumno[1]?>', '<?php echo $alumno[3]?>')">Detalles</button>
