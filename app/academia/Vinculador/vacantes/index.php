@@ -6,14 +6,16 @@ require_once '../../../../config/db.php';
 global $conexion;
 $query = "SELECT * FROM convocatorias as c JOIN empresas as e ON c.id_empresa = e.id;";
 
-    $stmt = mysqli_prepare($conexion, $query);
-    mysqli_stmt_execute($stmt);
-    $result = mysqli_stmt_get_result($stmt);
-    $data = mysqli_fetch_all($result);
-    mysqli_stmt_close($stmt);
+$stmt = mysqli_prepare($conexion, $query);
+mysqli_stmt_execute($stmt);
+$result = mysqli_stmt_get_result($stmt);
+$data = mysqli_fetch_all($result);
+mysqli_stmt_close($stmt);
 
+$sql_empresas = "select * from empresas";
 
-
+$stmt2 = mysqli_prepare($conexion, $sql_empresas);
+$empresas = mysqli_query($conexion, $sql_empresas);
 ?>
 
 <!DOCTYPE html>
@@ -69,7 +71,19 @@ $query = "SELECT * FROM convocatorias as c JOIN empresas as e ON c.id_empresa = 
                                         <div class="form-group row">
                                             <label for="inputEmpresa" class="col-sm-2 col-form-label">Empresa: </label>
                                             <div class="col-sm-10">
-                                                <input type="text" class="form-control" id="inputEmpresa" name="empresa" required>
+                                                <select class="custom-select" id="inputEmpresa" name="empresa" required>
+                                                    <option selected>Empresa...</option>
+
+                                                    <?php
+                                                    foreach ($empresas as $empresa) {
+                                                        $id = $empresa['id'];
+                                                        $nombre = $empresa['nombre'];
+                                                        echo "<option value='$id'>$nombre</option>";
+
+                                                    }
+                                                    ?>
+                                                </select>
+
                                             </div>
                                         </div>
                                         <div class="form-group row">
@@ -84,18 +98,18 @@ $query = "SELECT * FROM convocatorias as c JOIN empresas as e ON c.id_empresa = 
                                                 <input type="file" class="form-control-file" id="exampleFormControlFile1" name="imagen" required>
                                             </div>
                                         </div>
-                                        <div class="form-group row">
-                                            <label for="inputEmail" class="col-sm-2 col-form-label">Correo: </label>
-                                            <div class="col-sm-10">
-                                                <input type="email" class="form-control" id="inputEmail" name="correo" required>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label for="inputTelefono" class="col-sm-2 col-form-label">Teléfono: </label>
-                                            <div class="col-sm-10">
-                                                <input type="tel" class="form-control" id="inputTelefono" name="telefono" required>
-                                            </div>
-                                        </div>
+                                        <!--                                        <div class="form-group row">-->
+                                        <!--                                            <label for="inputEmail" class="col-sm-2 col-form-label">Correo: </label>-->
+                                        <!--                                            <div class="col-sm-10">-->
+                                        <!--                                                <input type="hidden" class="form-control" id="inputEmail" name="correo" required value="">-->
+                                        <!--                                            </div>-->
+                                        <!--                                        </div>-->
+                                        <!--                                        <div class="form-group row">-->
+                                        <!--                                            <label for="inputTelefono" class="col-sm-2 col-form-label">Teléfono: </label>-->
+                                        <!--                                            <div class="col-sm-10">-->
+                                        <!--                                                <input type="tel" class="form-control" id="inputTelefono" name="telefono" required>-->
+                                        <!--                                            </div>-->
+                                        <!--                                        </div>-->
                                         <div class="form-group row">
                                             <label for="inputCarrera" class="col-sm-2 col-form-label">Perfiles: </label>
                                             <div class="form-check form-check-inline">
@@ -107,90 +121,94 @@ $query = "SELECT * FROM convocatorias as c JOIN empresas as e ON c.id_empresa = 
                                                 <label class="form-check-label" for="inlineCheckbox2">Telecomunicaciones</label>
                                             </div>
                                         </div>
+
                                         <div class="form-group row">
                                             <label for="inputCantidadVacantes" class="col-sm-2 col-form-label">Vacantes disponibles: </label>
-                                            <select id="inputCantidadVacantes" class="col-sm-2" name="vacantes" required>
-                                                <option selected disabled value="">Selecciona</option>
-                                                <option>2</option>
-                                                <option>3</option>
-                                                <option>4</option>
-                                                <option>5</option>
-                                                <option>Indefinida</option>
-                                            </select>
+
+                                            <div class="col-sm-10">
+                                                <select class="custom-select" id="inputCantidadVacantes"  name="vacantes" required>
+                                                    <option selected disabled value="">Selecciona</option>
+                                                    <option>2</option>
+                                                    <option>3</option>
+                                                    <option>4</option>
+                                                    <option>5</option>
+                                                    <option>Indefinida</option>
+                                                </select>
+                                            </div>
                                         </div>
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                                         <button type="submit" class="btn btn-primary">Guardar</button>
                                     </form>
 
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="table-responsive mb-3">
-                <table class="table table-bordered dataTable">
-                    <thead>
-                    <tr>
-                        <th>Empresa</th>
-                        <th>Descripción</th>
-                        <th>Contacto</th>
-                        <th>Perfiles</th>
-                        <th>Vacantes</th>
-                        <th>Acciones</th>
-                    </tr>
-                    </thead>
-                    <tfoot>
-                    <tr>
-                        <th>Empresa</th>
-                        <th>Descripción</th>
-                        <th>Contacto</th>
-                        <th>Perfiles</th>
-                        <th>Vacantes</th>
-                        <th>Acciones</th>
-                    </tr>
-                    </tfoot>
-                    <tbody>
-                    <?php foreach ($data as $empresa): ?>
+                <div class="table-responsive mb-3">
+                    <table class="table table-bordered dataTable">
+                        <thead>
                         <tr>
-                            <td><?php echo $empresa[8] ?></td>
-                            <td><?php echo $empresa[3] ?></td>
-                            <td>
-                                <p><strong>Correo: </strong><br><?php echo $empresa[9]?></p><br>
-                                <p><strong>Teléfono: </strong><br><?php echo $empresa[10]?></p>
-                            </td>
-                            <td><?php echo $empresa[2]?></td>
-                            <td><?php echo $empresa[11]?></td>
-                            <td>
-                                <a href="#" class="btn btn-primary" >Editar</a>
-                                <button id="toggleButton" class="btn btn-primary">Ocultar</button>
-                                <a href="#" class="btn btn-primary">Imagen</a>
-                            </td>
+                            <th>Empresa</th>
+                            <th>Descripción</th>
+                            <th>Contacto</th>
+                            <th>Perfiles</th>
+                            <th>Vacantes</th>
+                            <th>Acciones</th>
                         </tr>
-                    <?php endforeach; ?>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tfoot>
+                        <tr>
+                            <th>Empresa</th>
+                            <th>Descripción</th>
+                            <th>Contacto</th>
+                            <th>Perfiles</th>
+                            <th>Vacantes</th>
+                            <th>Acciones</th>
+                        </tr>
+                        </tfoot>
+                        <tbody>
+                        <?php foreach ($data as $empresa): ?>
+                            <tr>
+                                <td><?php echo $empresa[9] ?></td>
+                                <td><?php echo $empresa[3] ?></td>
+                                <td>
+                                    <p><strong>Correo: </strong><br><?php echo $empresa[10]?></p><br>
+                                    <p><strong>Teléfono: </strong><br><?php echo $empresa[11]?></p>
+                                </td>
+                                <td><?php echo $empresa[2]?></td>
+                                <td><?php echo $empresa[1]?></td>
+                                <td>
+                                    <a href="#" class="btn btn-primary" >Editar</a>
+                                    <button id="toggleButton" class="btn btn-primary">Ocultar</button>
+                                    <a href="#" class="btn btn-primary">Imagen</a>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+
             </div>
+            <!-- /.container-fluid -->
+
+            <?php getFooter() ?>
 
         </div>
-        <!-- /.container-fluid -->
-
-        <?php getFooter() ?>
+        <!-- /.content-wrapper -->
 
     </div>
-    <!-- /.content-wrapper -->
+    <!-- /#wrapper -->
 
-</div>
-<!-- /#wrapper -->
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
 
-<!-- Scroll to Top Button-->
-<a class="scroll-to-top rounded" href="#page-top">
-    <i class="fas fa-angle-up"></i>
-</a>
+    <?php getModalLogout() ?>
 
-<?php getModalLogout() ?>
-
-<?php getBottomIncudes( RUTA_INCLUDE ) ?>
+    <?php getBottomIncudes( RUTA_INCLUDE ) ?>
 </body>
 
 </html>
