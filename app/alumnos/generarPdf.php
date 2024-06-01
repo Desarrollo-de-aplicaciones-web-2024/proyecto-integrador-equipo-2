@@ -318,4 +318,4 @@ $data = "
 $dompdf->loadHtml($data);
 $dompdf->setPaper('A4','vertical');
 $dompdf->render();
-$dompdf->stream('Solicitud de practicas', array("Attachment"=>0));
+$dompdf->stream('Solicitud de practicas', array("Attachment"=>1));

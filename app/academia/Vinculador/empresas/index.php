@@ -160,7 +160,7 @@ function getRegistros($conexion, $ciudades) {
                                     </div>
                                 </div>
                             
-                                ><div class='form-group'>
+                                <div class='form-group'>
                                     <label for='direccion-modal-" . $row['id'] . "' class='col-form-label'>Dirección</label>
                                     <input required name='direccion' type='text' class='form-control' id='direccion-modal-" . $row['id'] . "' value='" . htmlspecialchars($row['direccion']) . "'>
                                 </div>
