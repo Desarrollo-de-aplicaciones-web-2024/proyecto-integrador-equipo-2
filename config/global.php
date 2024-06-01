@@ -58,7 +58,7 @@ function getNavbar($ruta = ''){
     $html = <<<EOD
 <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
 
-    <a class="navbar-brand mr-1" href="{$ruta}index.php"><img src="https://upload.wikimedia.org/wikipedia/commons/6/62/Logo_de_la_Universidad_Crist%C3%B3bal_Col%C3%B3n.svg" width="200" height="100"/> </a>
+    <a class="navbar-brand mr-1" href="{$ruta}index.php"><img src="/img/favicon.ico" width="20" height="20"/> </a>
 
     <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
         <i class="fas fa-bars"></i>
