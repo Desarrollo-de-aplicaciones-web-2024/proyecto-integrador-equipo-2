@@ -1,6 +1,20 @@
 <?php
 require_once '../../../config/global.php';
+require_once '../../utils.php';
+require_once '../../consultas/documentos.php';
 
+global $documentTypes;
+
+$document = Documento::getById($_GET['id']);
+
+if (!$document) {
+    header('Location: documentosPendientes.php');
+}
+
+setlocale(LC_TIME, 'es_ES.UTF-8', 'es_ES', 'Spanish_Spain.1252');
+
+// ignore warnings
+error_reporting(E_ERROR | E_PARSE);
 
 define('RUTA_INCLUDE', '../../../');
 ?>
@@ -34,48 +48,76 @@ define('RUTA_INCLUDE', '../../../');
                 <!-- Metadata Column -->
                 <div class="col-md-4 mb-4">
                     <div class="col">
-                        <h2>Solicitud de inicio de prácticas</h2>
-                        <h4>Fecha de subida: 01/05/2024</h4>
+                        <h2><?= $documentTypes[$document['tipo']] ?></h2>
+                        <h4>Fecha de subida: <?= strftime('%e de %B del %Y a las %H:%M', (new DateTime($document['fecha_creacion']))->getTimestamp()); ?></h4>
 
-                        <ul class="list-group">
-                            <li class="list-group-item"><strong>Nombre:</strong> Enviosperros</li>
-                            <li class="list-group-item"><strong>Domicilio:</strong> La vecindad del chavo</li>
-                            <li class="list-group-item"><strong>Teléfono</strong> 2299123456</li>
-                            <li class="list-group-item"><strong>Correo:</strong> enviosperros@gmail.com</li>
-                            <li class="list-group-item"><strong>Giro:</strong> Logística</li>
+                        <ul class="list-group mt-4">
+                            <li class="list-group-item active"><h4>Datos del periodo</h4></li>
+                            <li class="list-group-item"><strong>Matrícula:</strong> <?= $document['practica']['alumno']['nombre'] ?></li>
+                            <li class="list-group-item"><strong>Duración:</strong> <?= $document['practica']['duracion'] ?> meses</li>
+                            <li class="list-group-item"><strong>Fecha de inicio:</strong> <?= strftime('%e de %B del %Y', (new DateTime($document['practica']['fecha_inicio']))->getTimestamp()); ?></li>
+                            <li class="list-group-item"><strong>Puesto:</strong> <?= $document['practica']['puesto'] ?></li>
+                            <li class="list-group-item"><strong>Actividades:</strong> <?= $document['practica']['actividades'] ?></li>
+                        </ul>
+
+                        <ul class="list-group mt-4">
+                            <li class="list-group-item active"><h4>Datos de la empresa</h4></li>
+                            <li class="list-group-item"><strong>Empresa:</strong> <?= $document['practica']['empresa']['nombre'] ?></li>
+                            <li class="list-group-item"><strong>Domicilio:</strong> <?= $document['practica']['empresa']['direccion'] ?></li>
+                            <li class="list-group-item"><strong>Teléfono</strong> <?= $document['practica']['empresa']['telefono'] ?></li>
+                            <li class="list-group-item"><strong>Correo:</strong> <?= $document['practica']['empresa']['email'] ?></li>
+                            <li class="list-group-item"><strong>Giro:</strong> <?= $document['practica']['empresa']['giro']['nombre'] ?></li>
                         </ul>
                     </div>
                     <div class="col mt-5">
-                        <h3>Documentos</h3>
-                        <div class="d-flex align-items-center mt-3">
-                            <div class="d-flex flex-column align-items-center">
-                                <i class="fas fa-file-pdf" style="font-size: 3.5rem;"></i>
-                                <p class="text-center">Archivo: Cartita.pdf</p>
+                        <form action="revisar_documento.php" method="post" id="rechazarForm">
+                            <input type="hidden" name="id" value="<?= $_GET['id'] ?>">
+                            <div class="mt-3 block btn-group w-100">
+                                <button class="btn btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#rechazarModal">Rechazar</button>
+                                <button class="btn btn-success" name="approve">Aprobar</button>
                             </div>
-                            <div class="d-flex flex-column align-items-center ml-3">
-                                <i class="fas fa-file-pdf" style="font-size: 3.5rem;"></i>
-                                <p class="text-center">Archivo: Cartita.pdf</p>
-                            </div>
-                        </div>
-                        <div class="mt-3 block btn-group w-100">
-                            <button class="btn btn-danger">Rechazar</button>
-                            <button class="btn btn-success">Aprobar</button>
-                        </div>
+                        </form>
                     </div>
                 </div>
 
                 <!-- PDF Preview Column -->
-<!--                <div class="col-md-8 mb-4">-->
-<!--                    <h4>File Preview</h4>-->
-<!--                    <div id="pdf-preview"></div>-->
-<!--                </div>-->
-
-                <div class="col-md-8 mb-4">
+                <div class="col-md-8 mb-4 pb-4">
                     <h4>Vista previa</h4>
-                    <iframe src="http://proyecto-integrador-equipo-2.test/storage/reports/example.pdf" width="100%" height="600px"></iframe>
+                    <iframe src="http://proyecto-integrador-equipo-2.test/storage/reports/example.pdf" width="100%" height="100%"></iframe>
                 </div>
             </div>
         </div>
+
+        <div class="modal fade" id="rechazarModal" tabindex="-1" aria-labelledby="rechazarModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form action="revisar_documento.php" method="post" id="rechazarFormModal">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="rechazarModalLabel">Razón de Rechazo</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <textarea class="form-control" name="motivo" rows="4" required></textarea>
+                            <input type="hidden" name="id" value="<?= $_GET['id'] ?>">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            <button type="submit" class="btn btn-danger">Rechazar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                var rechazarModal = new bootstrap.Modal(document.getElementById('rechazarModal'));
+                document.querySelector('.btn-danger[data-bs-toggle="modal"]').addEventListener('click', function() {
+                    rechazarModal.show();
+                });
+            });
+        </script>
+
         <!-- /.container-fluid -->
 
         <?php getFooter() ?>
