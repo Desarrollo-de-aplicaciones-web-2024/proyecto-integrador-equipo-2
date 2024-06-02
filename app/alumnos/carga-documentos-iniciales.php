@@ -4,14 +4,55 @@ require '../../config/db.php';
 require_once '../../config/global.php';
 define('RUTA_INCLUDE', '../../'); //ajustar a necesidad
 
+$matAlumno = '202160023'; //matricula del usuario qeu esta logeado en el sistema
+
+//ver si el alumno tiene una practica en estatus pendiente.
+$sql_practica = "select * from practicas where matricula_alumno = $matAlumno and estatus = 'pendiente'";
+$res = mysqli_query($conexion, $sql_practica);
+if ($res) {
+    if (mysqli_num_rows($res) > 0) { //solo deberia de haber 1 pratica pendiente
+        while ($row = mysqli_fetch_assoc($res)) {
+            $practica_id = $row['id'];
+            $practica_matricula_alumno = $row['matricula_alumno'];
+            $practica_estatus = $row['estatus'];
+            $practica_id_empresa = $row['id_empresa'];
+            $practica_duracion = $row['duracion'];
+            $practica_nombre_supervisor = $row['supervisor'];
+            $practica_puesto_supervisor = $row['puesto_supervisor'];
+            $practica_fecha_inicio = $row['fecha_inicio'];
+            $practica_fecha_fin = $row['fecha_fin'];
+            $practica_puesto = $row['puesto'];
+            $practica_departamento = $row['departamento'];
+            $practica_horas = $row['horas'];
+            $practica_horario_entrada = $row['horario_entrada'];
+            $practica_horario_salida = $row['horario_salida'];
+            $practica_id_carrera = $row['id_carrera'];
+            $practica_actividades = $row['actividades'];
+        }
+    } else {
+        header("Location: inicio-practicas.php");
+    }
+}else {
+    header("Location: inicio-practicas.php");
+}
+
 $status = isset($_SESSION['status']) ? $_SESSION['status'] : null;
 $mensaje = isset($_SESSION['mensaje']) ? $_SESSION['mensaje'] : null;
-$practica = isset($_SESSION['fila_creada']) ? $_SESSION['fila_creada'] : null;
 
 // Limpiar datos de sesión si ya no se necesitan
 unset($_SESSION['fila_creada']);
 unset($_SESSION['status']);
 unset($_SESSION['mensaje']);
+
+//precargar los archivos
+$directory = "../servicio/inicial/";
+$files = scandir($directory);
+
+// Filtrar solo archivos PDF
+$pdfFiles = array_filter($files, function($file) use ($directory) {
+    return is_file($directory . $file) && pathinfo($file, PATHINFO_EXTENSION) == "pdf";
+});
+
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -28,6 +69,21 @@ unset($_SESSION['mensaje']);
 
 
     <?php getTopIncludes(RUTA_INCLUDE ) ?>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var inputs = document.querySelectorAll('.custom-file-input');
+            Array.prototype.forEach.call(inputs, function (input) {
+                input.addEventListener('change', function (e) {
+                    var fileName = input.files[0].name;
+                    var label = document.getElementById(input.id+"-name");
+                    label.innerHTML = fileName;
+                });
+            });
+        });
+    </script>
+
+
 </head>
 
 <body id="page-top">
@@ -79,49 +135,85 @@ unset($_SESSION['mensaje']);
             </nav>
 
             <hr>
-                <form target="_blank" action="generarPdf.php" method="post">
-                    <input type="hidden" id="id-empresa" name="id-empresa" value="<?php echo $practica['id_empresa'] ?>"/>
-                    <input type="hidden" id="matricula" name="matricula" value="<?php echo $practica['matricula_alumno'] ?>"/>
-                    <input type="hidden" id="duracion" name="duracion" value="<?php echo $practica['duracion'] ?>"/>
-                    <input type="hidden" id="puesto" name="puesto" value="<?php echo $practica['puesto'] ?>"/>
-                    <input type="hidden" id="departamento" name="departamento" value="<?php echo $practica['departamento'] ?>"/>
-                    <input type="hidden" id="horas" name="horas" value="<?php echo $practica['horas'] ?>"/>
-                    <input type="hidden" id="fecha-inicio" name="fecha-inicio" value="<?php echo $practica['fecha_inicio'] ?>"/>
-                    <input type="hidden" id="fecha-fin" name="fecha-fin" value="<?php echo $practica['fecha_fin'] ?>"/>
-                    <input type="hidden" id="supervisor" name="supervisor" value="<?php echo $practica['supervisor'] ?>"/>
-                    <input type="hidden" id="puesto-supervisor" name="puesto-supervisor" value="<?php echo $practica['puesto_supervisor'] ?>"/>
+            <h2>Generación de documentos</h2>
+            <hr>
 
-                    <button type="submit">Generar documento</button>
-                </form>
+            <div class='form-group col-md-5'>
+                <div class='form-row justify-content-around'>
+                    <div class='form-group col-md-6'>
+                        <form target="_blank" action="generarPdf.php" method="post">
 
+                            <input type="hidden" id="id-empresa" name="id-empresa" value="<?php echo $practica_id_empresa ?>"/>
+                            <input type="hidden" id="matricula" name="matricula" value="<?php echo $practica_matricula_alumno ?>"/>
+                            <input type="hidden" id="duracion" name="duracion" value="<?php echo $practica_duracion ?>"/>
+                            <input type="hidden" id="puesto" name="puesto" value="<?php echo $practica_puesto ?>"/>
+                            <input type="hidden" id="departamento" name="departamento" value="<?php echo $practica_departamento ?>"/>
+                            <input type="hidden" id="horas" name="horas" value="<?php echo $practica_horas ?>"/>
+                            <input type="hidden" id="fecha-inicio" name="fecha-inicio" value="<?php echo $practica_fecha_inicio ?>"/>
+                            <input type="hidden" id="fecha-fin" name="fecha-fin" value="<?php echo $practica_fecha_fin ?>"/>
+                            <input type="hidden" id="supervisor" name="supervisor" value="<?php echo $practica_nombre_supervisor ?>"/>
+                            <input type="hidden" id="puesto-supervisor" name="puesto-supervisor" value="<?php echo $practica_puesto_supervisor ?>"/>
+                            <input type="hidden" id="id-carrera" name="id-carrera" value="<?php echo $practica_id_carrera ?>"/>
 
-            <form action="" method="post">
+                            <button type="submit" class="btn btn-outline-secondary">Solicitud de prácticas profesionales</button>
+                        </form>
+                    </div>
+
+                    <div class='form-group col-md-6'>
+                        <form target="_blank" action="plan-trabajo.php" method="post">
+                            <input type="hidden" id="id-empresa" name="id-empresa" value="<?php echo $practica_id_empresa ?>"/>
+                            <input type="hidden" id="matricula" name="matricula" value="<?php echo $practica_matricula_alumno ?>"/>
+                            <input type="hidden" id="fecha-inicio" name="fecha-inicio" value="<?php echo $practica_fecha_inicio ?>"/>
+                            <input type="hidden" id="horario-entrada" name="horario-entrada" value="<?php echo $practica_horario_entrada ?>"/>
+                            <input type="hidden" id="horario-salida" name="horario-salida" value="<?php echo $practica_horario_salida ?>"/>
+                            <input type="hidden" id="actividades" name="actividades" value="<?php echo $practica_actividades ?>"/>
+                            <input type="hidden" id="supervisor" name="supervisor" value="<?php echo $practica_nombre_supervisor ?>"/>
+                            <input type="hidden" id="horas" name="horas" value="<?php echo $practica_horas ?>"/>
+                            <input type="hidden" id="id-carrera" name="id-carrera" value="<?php echo $practica_id_carrera ?>"/>
+                            <button type="submit" class="btn btn-outline-secondary">Plan de trabajo</button>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+
+            <h2>Carga de documentos</h2>
+            <hr>
+
+            <form action="subirDocumentos.php" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="practica-id" id="practica-id" value=<?php echo $practica_id?>>
 
                 <div class="form-group col-md-3">
                     <div class="custom-file ">
-                        <input type="file" class="custom-file-input" id="customFile">
-                        <label class="custom-file-label" for="customFile">Solicitud de inicio de prácticas</label>
+                        <label class="custom-file-label" for="solicitud">Solicitud de inicio de prácticas</label>
+                        <input required type="file" class="custom-file-input" id="solicitud" name="solicitud">
+                        <p id="solicitud-name"></p>
                     </div>
                 </div>
 
                 <div class="form-group col-md-3">
                     <div class="custom-file ">
-                        <input type="file" class="custom-file-input" id="customFile">
-                        <label class="custom-file-label" for="customFile">Plan de trabajo</label>
+                        <label class="custom-file-label" for="plan-trabajo">Plan de trabajo</label>
+                        <input required type="file" class="custom-file-input" id="plan-trabajo" name="plan-trabajo">
+                        <p id="plan-trabajo-name"></p>
+
                     </div>
                 </div>
 
                 <div class="form-group col-md-3">
-                    <div class="custom-file ">
-                        <input type="file" class="custom-file-input" id="customFile">
-                        <label class="custom-file-label" for="customFile">Carta de aceptación</label>
+                    <div class="custom-file">
+                        <label class="custom-file-label" for="carta-aceptacion">Carta de aceptación</label>
+                        <input required type="file" class="custom-file-input" id="carta-aceptacion" name="carta-aceptacion">
+                        <p id="carta-aceptacion-name"></p>
                     </div>
                 </div>
-
-
-                <button type="submit" class="btn btn-primary">Enviar</button>
+                <div class='form-group col-md-12'>
+                    <div class='form-row justify-content-start align-items-center'>
+                        <button type="submit" class="btn btn-primary">Enviar</button>
+                        <a href="./editar-practica.php" style="margin-left: 10px">Editar formulario</a>
+                    </div>
+                </div>
             </form>
-
 
         </div>
         <!-- /.container-fluid -->

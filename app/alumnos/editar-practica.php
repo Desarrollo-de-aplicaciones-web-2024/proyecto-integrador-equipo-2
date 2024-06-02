@@ -6,6 +6,9 @@ define('RUTA_INCLUDE', '../../');
 
 $status = isset($_SESSION['status']) ? $_SESSION['status'] : null;
 $mensaje = isset($_SESSION['mensaje']) ? $_SESSION['mensaje'] : null;
+
+
+$practica_id = isset($_GET['practica-id']) ? $_GET['practica-id'] : null;
 $empresa = isset($_GET['empresa-id']) ? $_GET['empresa-id'] : null;
 
 $puesto = isset($_GET['puesto']) ? $_GET['puesto'] : null;
@@ -21,16 +24,33 @@ $actividades = isset($_GET['actividades']) ? $_GET['actividades'] : null;
 $nombre_supervisor = isset($_GET['nombre-supervisor']) ? $_GET['nombre-supervisor'] : null;
 $puesto_supervisor = isset($_GET['puesto-supervisor']) ? $_GET['puesto-supervisor'] : null;
 
-
-$empresa_post = isset($_POST['empresa-id']) ? $_POST['empresa-id'] : null;
 $mat_alumno = "202160023";
 
-//ver si el alumno tiene una practica en estatus pendiente.
+//ver si el alumno tiene una practica en estatus pendiente. (o rechazada)
 $sql_practica = "select * from practicas where matricula_alumno = $mat_alumno and estatus = 'pendiente'";
 $res = mysqli_query($conexion, $sql_practica);
 if ($res) {
     if (mysqli_num_rows($res) > 0) {
+        //No puede entrar si no tiene algo en pendiente o rechazado
+        $row = mysqli_fetch_assoc($res);
+        $practica_id = $row['id'];
+        $empresa = $empresa ? $empresa : $row['id_empresa'];
+        $duracion = $row['duracion'];
+        $nombre_supervisor = $row['supervisor'];
+        $puesto_supervisor = $row['puesto_supervisor'];
+        $fecha_inicio = $row['fecha_inicio'];
+        $fecha_fin = $row['fecha_fin'];
+        $puesto = $row['puesto'];
+        $departamento = $row['departamento'];
+        $horas = $row['horas'];
+        $horario_entrada = $row['horario_entrada'];
+        $horario_salida = $row['horario_salida'];
+        $carrera = $row['id_carrera'];
+        $actividades = $row['actividades'];
+
+    } else {
         header("Location: carga-documentos-iniciales.php");
+
     }
 }else {
     echo "Error en la consulta: " . mysqli_error($conexion);
@@ -164,38 +184,38 @@ if ($res) {
             </nav>
 
             <hr>
-                <form action="inicio-practicas.php" method="get" novalidate class='needs-validation'>
-                    <div class='form-row justify-content-center'>
-                        <div class='form-group col-md-3 justify-content-center'>
-                            <label for="empresa-id">Nombre o razón social de la empresa</label>
-                            <select required class="custom-select" id="empresa-id" name="empresa-id">
-                                <option selected value="">Seleccione una empresa...</option>
-                                <?php
-                                $sql_select = "SELECT id,nombre FROM empresas";
-                                $res = mysqli_query($conexion, $sql_select);
+            <form action="editar-practica.php" method="get" novalidate class='needs-validation'>
+                <div class='form-row justify-content-center'>
+                    <div class='form-group col-md-3 justify-content-center'>
+                        <label for="empresa-id">Nombre o razón social de la empresa</label>
+                        <select required class="custom-select" id="empresa-id" name="empresa-id">
+                            <option selected value="">Seleccione una empresa...</option>
+                            <?php
+                            $sql_select = "SELECT id,nombre FROM empresas";
+                            $res = mysqli_query($conexion, $sql_select);
 
-                                if ($res) {
-                                    while ($row = mysqli_fetch_assoc($res)) {
-                                        echo '<option value=' . $row['id'] . '>' . $row['nombre'] . '</option>';
-                                    }
+                            if ($res) {
+                                while ($row = mysqli_fetch_assoc($res)) {
+                                    echo '<option value=' . $row['id'] . '>' . $row['nombre'] . '</option>';
                                 }
-                                ?>
-                            </select>
-                        </div>
-                        <div class="form-group align-self-end">
-                            <button  type="submit" class="btn btn-primary">Seleccionar</button>
-                        </div>
+                            }
+                            ?>
+                        </select>
                     </div>
+                    <div class="form-group align-self-end">
+                        <button  type="submit" class="btn btn-primary">Seleccionar</button>
+                    </div>
+                </div>
 
-                </form>
+            </form>
 
 
 
 
             <?php
 
-                if ($empresa) {
-                    echo "
+            if ($empresa) {
+                echo "
                         <form method='post' action='guardar_practica.php' novalidate class='needs-validation border border-bottom-0 rounded-top p-4 col-md-11 m-auto'>
                             <fieldset>
                                 <legend class='text-center my-3'><h4>Empresa</h4></legend>
@@ -249,27 +269,31 @@ if ($res) {
                                             <select required id='duracion' class='form-control custom-select' name='duracion'>
                                             
                                             ";
-                                            ?>
+                ?>
 
-                                            <?php
-                                                if ($duracion) {
-                                                    echo "<option value=''>Meses de prácticas...</option>";
-                                                    for ($i = 3; $i <= 12; $i++) {
-                                                        if ($duracion == $i) {
-                                                            echo "<option value='$i' selected>$i meses</option>";
-                                                        } else {
-                                                            echo "<option value='$i'>$i meses</option>";
-                                                        }
-                                                    }
-                                                } else {
-                                                    echo "<option value='' selected>Meses de prácticas...</option>";
-                                                    for ($i = 3; $i <= 12; $i++) {
-                                                        echo "<option value='$i'>$i meses</option>";
-                                                    }
-                                                }
-                                            ?>
+                <?php
 
-                                    <?php echo "
+                if ($duracion) {
+                    echo "<option value=''>Meses de prácticas...</option>";
+                    for ($i = 3; $i <= 12; $i++) {
+                        if ($duracion == $i) {
+                            echo "<option value='$i' selected>$i meses</option>";
+                        } else {
+                            echo "<option value='$i'>$i meses</option>";
+                        }
+                    }
+                } else {
+                    echo "<option value='' selected>Meses de prácticas...</option>";
+                    for ($i = 3; $i <= 12; $i++) {
+                        echo "<option value='$i'>$i meses</option>";
+                    }
+                }
+
+
+
+                ?>
+
+                <?php echo "
                                             </select>
                                             <div class='invalid-feedback'>
                                                 Minimo 3 meses
@@ -326,25 +350,25 @@ if ($res) {
                                                 Ingrese carrera valida
                                             </div>
                                                ";
-                                    ?>
+                ?>
 
-                                    <?php
-                                        if ($carrera) {
-                                            foreach ($carreras_alumno as $id_carrera => $nombre_carrera) {
-                                                if ($carrera == $id_carrera) {
-                                                    echo "<option value='$id_carrera' selected>$nombre_carrera</option>";
-                                                } else {
-                                                    echo "<option value='$id_carrera'>$nombre_carrera</option>";
-                                                }
-                                            }
-                                        } else {
-                                            foreach ($carreras_alumno as $id_carrera => $nombre_carrera) {
-                                                echo "<option value='$id_carrera'>$nombre_carrera</option>";
-                                            }
-                                        }
-                                    ?>
+                <?php
+                if ($carrera) {
+                    foreach ($carreras_alumno as $id_carrera => $nombre_carrera) {
+                        if ($carrera == $id_carrera) {
+                            echo "<option value='$id_carrera' selected>$nombre_carrera</option>";
+                        } else {
+                            echo "<option value='$id_carrera'>$nombre_carrera</option>";
+                        }
+                    }
+                } else {
+                    foreach ($carreras_alumno as $id_carrera => $nombre_carrera) {
+                        echo "<option value='$id_carrera'>$nombre_carrera</option>";
+                    }
+                }
+                ?>
 
-                                    <?php echo "
+                <?php echo "
                                             </select>
                                         </div>
                                         
@@ -374,6 +398,8 @@ if ($res) {
                                         </div>
                                         <div class='form-group col-md-3'>
                                             <label for='puesto-supervisor'>Puesto del supervisor</label>
+                                            <input type='hidden' name='editar' id='editar' value='1'/>
+                                            <input type='hidden' name='practica-id' id='practica-id' value='$practica_id'/>
                                             <input required type='text' class='form-control' id='puesto-supervisor' placeholder='' name='puesto-supervisor' value='$puesto_supervisor'>
                                             <div class='invalid-feedback'>
                                                 Puesto requerido
@@ -389,7 +415,7 @@ if ($res) {
                         </form>
                     ";
 
-                    echo "
+                echo "
                         <script>
                             function validar(){
                                 function clases(elemento,invalid) {
@@ -439,7 +465,7 @@ if ($res) {
                         }
                         </script>
                     ";
-                }
+            }
             ?>
 
         </div>
