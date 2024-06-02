@@ -26,24 +26,20 @@
     <div class="card card-login mx-auto mt-5">
         <div class="card-header">Recuperar contraseña</div>
         <div class="card-body">
-            <div class="text-center mb-4">
-                <h4>¿Olvidó su contraseña?</h4>
-                <p>Se enviará un correo electrónico con instrucciones para recuperar el acceso a su cuenta.</p>
-                <p>Ingrese su matrícula.</p>
-            </div>
-            <form action="recuperacion.php" method="post">
+            <form action="verificacion.php" method="post">
                 <div class="form-group">
                     <div class="form-label-group">
-                        <p>Matrícula</p>
-                        <input type="text" id="matricula" name="matricula" class="form-control-sm"
+                        <p>Codigo</p>
+                        <input type="number" id="codigo" name="codigo" class="form-control-sm"
                                style="border-radius: 15px; height: 35px;">
+                        <input type="hidden" id="email" name="email" class="form-control-sm">
+                        <input type="hidden" id="token" name="token" class="form-control-sm">
+                        <input type="hidden" id="matricula" name="matricula" class="form-control-sm">
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary btn-block" href="recuperacion.php">Recuperar</button>
+                <button type="submit" class="btn btn-primary btn-block">Verificar</button>
             </form>
-            <div class="text-center">
-                <a class="d-block small mt-3" href="index.php">Página de inicio</a>
-            </div>
+
         </div>
     </div>
 </div>
