@@ -1,6 +1,9 @@
 <?php
 require_once '../../../config/global.php';
-require_once '../../consultas/alumnos.php';
+require_once '../../consultas/documentos.php';
+require_once '../../utils.php';
+
+global $documentTypes;
 
 define('RUTA_INCLUDE', '../../../');
 ?>
@@ -16,7 +19,7 @@ define('RUTA_INCLUDE', '../../../');
 
     <title><?php echo PAGE_TITLE ?></title>
 
-    <?php getTopIncludes(RUTA_INCLUDE ) ?>
+    <?php getTopIncludes(RUTA_INCLUDE) ?>
 </head>
 
 <body id="page-top">
@@ -35,23 +38,24 @@ define('RUTA_INCLUDE', '../../../');
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">Catálogos</li>
-                    <li class="breadcrumb-item active" aria-current="page">Alumnos activos</li>
+                    <li class="breadcrumb-item active" aria-current="page">Documentos pendientes</li>
                 </ol>
             </nav>
 
-<!--            <div class="alert alert-success" role="alert">-->
-<!--                <i class="fas fa-check"></i> Mensaje de éxito-->
-<!--            </div>-->
-<!---->
-<!--            <div class="alert alert-danger" role="alert">-->
-<!--                <i class="fas fa-exclamation-triangle"></i> Mensaje de error-->
-<!--            </div>-->
+            <!--            <div class="alert alert-success" role="alert">-->
+            <!--                <i class="fas fa-check"></i> Mensaje de éxito-->
+            <!--            </div>-->
+            <!---->
+            <!--            <div class="alert alert-danger" role="alert">-->
+            <!--                <i class="fas fa-exclamation-triangle"></i> Mensaje de error-->
+            <!--            </div>-->
 
-<!--            <div class="row my-3">-->
-<!--                <div class="col text-right">-->
-<!--                    <button type="button" class="btn btn-primary"><i class="fas fa-plus"></i> Nuevo</button>-->
-<!--                </div>-->
-<!--            </div>-->
+            <!--            <div class="row my-3">-->
+            <!--                <div class="col text-right">-->
+            <!--                    <button type="button" class="btn btn-primary"><i class="fas fa-plus"></i> Nuevo</button>-->
+            <!--                </div>-->
+            <!--            </div>-->
+
 
             <div class="table-responsive mb-3">
                 <table class="table table-bordered dataTable">
@@ -60,7 +64,6 @@ define('RUTA_INCLUDE', '../../../');
                         <th>Nombre</th>
                         <th>Semestre</th>
                         <th>Empresa</th>
-                        <th>Documentos</th>
                         <th>Tipo</th>
                         <th>Acciones</th>
                     </tr>
@@ -70,24 +73,22 @@ define('RUTA_INCLUDE', '../../../');
                         <th>Nombre</th>
                         <th>Semestre</th>
                         <th>Empresa</th>
-                        <th>Documentos</th>
                         <th>Tipo</th>
                         <th>Acciones</th>
                     </tr>
                     </tfoot>
                     <tbody>
 
-                    <?php foreach (Alumno::getAll() as $alumno): ?>
+                    <?php foreach (Documento::getAll() as $documento): ?>
+                        <?php if ($documento['estatus'] != 'pendiente') continue; ?>
                         <tr>
-                            <td><?php echo $alumno[1] ?></td>
-                            <td><?php echo $alumno[3] ?></td>
-                            <td><?php echo 'Intellia' ?></td>
-                            <td>
-                                <a href="documentoDetalle.php" class="text-decoration-none" style="color: unset;"><i class="fas fa-file text-secondary" style=""></i></a>
-                                <a href="documentoDetalle.php" class="text-decoration-none" style="color: unset;"><i class="fas fa-file text-primary"></i></a>
+                            <td><?php echo $documento['practica']['alumno']['nombre'] ?></td>
+                            <td><?php echo $documento['practica']['alumno']['semestre'] ?></td>
+                            <td><?php echo $documento['practica']['empresa']['nombre'] ?></td>
+                            <td><?php echo $documentTypes[$documento['tipo']] . ($documento['numero_reporte'] ? " ({$documento['numero_reporte']})" : '') ?>
                             </td>
-                            <td><?php echo 'Mensual' ?></td>
                             <td>
+                                <a href="documentoDetalle.php?id=<?= $documento['id'] ?>" class="btn btn-link btn-sm">Ver</a>
                                 <a href="#" class="btn btn-link btn-sm">Editar</a>
                                 <a href="#" class="btn btn-link btn-sm">Eliminar</a>
                             </td>
@@ -116,7 +117,7 @@ define('RUTA_INCLUDE', '../../../');
 
 <?php getModalLogout() ?>
 
-<?php getBottomIncudes( RUTA_INCLUDE ) ?>
+<?php getBottomIncudes(RUTA_INCLUDE) ?>
 </body>
 
 </html>
