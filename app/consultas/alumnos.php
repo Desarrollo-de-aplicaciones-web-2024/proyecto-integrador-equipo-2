@@ -5,10 +5,10 @@ global $conexion;
 
 class Alumno
 {
-    static public function getById($id)
+    static public function getByMatricula($id)
     {
         global $conexion;
-        $query = "SELECT * FROM alumnos WHERE id = ?";
+        $query = "SELECT * FROM alumnos WHERE matricula = ?";
 
         if ($stmt = mysqli_prepare($conexion, $query)) {
             mysqli_stmt_bind_param($stmt, "i", $id);
