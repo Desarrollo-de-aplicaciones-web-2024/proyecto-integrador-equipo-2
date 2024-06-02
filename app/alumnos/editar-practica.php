@@ -4,6 +4,36 @@ require '../../config/db.php';
 require_once '../../config/global.php';
 define('RUTA_INCLUDE', '../../');
 
+$mat_alumno= isset($_SESSION['matricula']) ? $_SESSION['matricula'] : null;
+
+if (!$mat_alumno) {
+    header('Location: ../index.php');
+    exit();
+}
+
+//checar si esta en revision
+$sql_revision = "select * from practicas WHERE matricula_alumno = '$mat_alumno' AND estatus = 'revision'";
+$res = mysqli_query($conexion, $sql_revision);
+if ($res && mysqli_num_rows($res) > 0) {
+    header('Location: mis-practicas.php');
+    exit();
+}
+
+//obtener datos del alumno
+$sql_alumno = "SELECT a.nombre, a.semestre, p.estatus FROM alumnos a LEFT JOIN practicas p ON a.matricula = p.matricula_alumno WHERE a.matricula = '$mat_alumno';";
+$res = mysqli_query($conexion, $sql_alumno);
+
+if ($res && mysqli_num_rows($res) > 0) {
+    $row = mysqli_fetch_assoc($res);
+    $nombre = $row['nombre'];
+    $semestre = $row['semestre'];
+    $practica_status = $row['estatus'];
+} else {
+    header('Location: ../index.php');
+    exit();
+}
+
+
 $status = isset($_SESSION['status']) ? $_SESSION['status'] : null;
 $mensaje = isset($_SESSION['mensaje']) ? $_SESSION['mensaje'] : null;
 
@@ -23,8 +53,6 @@ $carrera = isset($_GET['carrera']) ? $_GET['carrera'] : null;
 $actividades = isset($_GET['actividades']) ? $_GET['actividades'] : null;
 $nombre_supervisor = isset($_GET['nombre-supervisor']) ? $_GET['nombre-supervisor'] : null;
 $puesto_supervisor = isset($_GET['puesto-supervisor']) ? $_GET['puesto-supervisor'] : null;
-
-$mat_alumno = "202160023";
 
 //ver si el alumno tiene una practica en estatus pendiente. (o rechazada)
 $sql_practica = "select * from practicas where matricula_alumno = $mat_alumno and estatus = 'pendiente'";
@@ -143,7 +171,7 @@ if ($res) {
 
 <div id="wrapper">
 
-    <?php getSidebar() ?>
+    <?php getSidebarAlumno('../alumnos/', $semestre, $practica_status); ?>
 
     <div id="content-wrapper">
         <div class="container-fluid">
@@ -184,30 +212,30 @@ if ($res) {
             </nav>
 
             <hr>
-            <form action="editar-practica.php" method="get" novalidate class='needs-validation'>
-                <div class='form-row justify-content-center'>
-                    <div class='form-group col-md-3 justify-content-center'>
-                        <label for="empresa-id">Nombre o razón social de la empresa</label>
-                        <select required class="custom-select" id="empresa-id" name="empresa-id">
-                            <option selected value="">Seleccione una empresa...</option>
-                            <?php
-                            $sql_select = "SELECT id,nombre FROM empresas";
-                            $res = mysqli_query($conexion, $sql_select);
-
-                            if ($res) {
-                                while ($row = mysqli_fetch_assoc($res)) {
-                                    echo '<option value=' . $row['id'] . '>' . $row['nombre'] . '</option>';
-                                }
-                            }
-                            ?>
-                        </select>
-                    </div>
-                    <div class="form-group align-self-end">
-                        <button  type="submit" class="btn btn-primary">Seleccionar</button>
-                    </div>
-                </div>
-
-            </form>
+<!--            <form action="editar-practica.php" method="get" novalidate class='needs-validation'>-->
+<!--                <div class='form-row justify-content-center'>-->
+<!--                    <div class='form-group col-md-3 justify-content-center'>-->
+<!--                        <label for="empresa-id">Nombre o razón social de la empresa</label>-->
+<!--                        <select required class="custom-select" id="empresa-id" name="empresa-id">-->
+<!--                            <option selected value="">Seleccione una empresa...</option>-->
+<!--                            --><?php
+//                            $sql_select = "SELECT id,nombre FROM empresas";
+//                            $res = mysqli_query($conexion, $sql_select);
+//
+//                            if ($res) {
+//                                while ($row = mysqli_fetch_assoc($res)) {
+//                                    echo '<option value=' . $row['id'] . '>' . $row['nombre'] . '</option>';
+//                                }
+//                            }
+//                            ?>
+<!--                        </select>-->
+<!--                    </div>-->
+<!--                    <div class="form-group align-self-end">-->
+<!--                        <button  type="submit" class="btn btn-primary">Seleccionar</button>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!---->
+<!--            </form>-->
 
 
 
@@ -409,8 +437,15 @@ if ($res) {
                                </div>
                             </fieldset>
                             
+                            <div class='form-group col-md-12'>
+                                <div class='form-row justify-content-center align-items-center'>
+                                    <button type='submit' class='btn btn-primary' onclick='validar()'>Guardar</button>
+                                    <a href='carga-documentos-iniciales.php' style='margin-left: 10px'>Cancelar</a>
+                                </div>
+                            </div>
+                            
                             <div class='col-md-12 d-flex justify-content-center'>
-                                <button type='submit' class='btn btn-primary' onclick='validar()'>Guardar</button>
+
                             </div>
                         </form>
                     ";

@@ -191,4 +191,72 @@ EOD;
 
     echo $html;
 }
+
+function getSidebarAlumno($ruta = '', $semestre, $practica){
+
+    $html = "<ul class='sidebar navbar-nav'>";
+
+    if (!($practica === null || $practica === "pendiente")){
+        $html .=<<<EOD
+        <li class="nav-item">
+            <a class="nav-link" href="{$ruta}mis-practicas.php">
+                <i class="fas fa-calculator"></i>
+                <span>Mis prácticas</span>
+            </a>
+        </li>
+    EOD;
+    }
+
+    if (($practica === null || $practica === "pendiente") && $semestre >= 4){
+        $html .=<<<EOD
+        <li class="nav-item">
+            <a class="nav-link" href="{$ruta}inicio-practicas.php">
+                <i class="fas fa-calculator"></i>
+                <span>Inicio de prácticas</span>
+            </a>
+        </li>
+    EOD;
+    }
+
+    $html .= <<<EOD
+<!-- Sidebar -->
+
+    <li class="nav-item">
+        <a class="nav-link" href="{$ruta}convocatorias.php">
+            <i class="fas fa-truck"></i>
+            <span>Convocatorias</span>
+        </a>
+    </li>
+<!--    <li class="nav-item dropdown">-->
+<!--        <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown"-->
+<!--           aria-haspopup="true" aria-expanded="false">-->
+<!--            <i class="fas fa-fw fa-folder"></i>-->
+<!--            <span>Catálogos</span>-->
+<!--        </a>-->
+<!--        <div class="dropdown-menu" aria-labelledby="pagesDropdown">                        -->
+<!--            <a class="dropdown-item" href="#">Opción 1</a>-->
+<!--            <a class="dropdown-item" href="#">Opción 2</a>            -->
+<!--            <a class="dropdown-item" href="#">Opción 3</a>-->
+<!--            <div class="dropdown-divider"></div>        -->
+<!--            <a class="dropdown-item" href="#">Opción 4</a>            -->
+<!--            <a class="dropdown-item" href="#">Opción 5</a>-->
+<!--            <div class="dropdown-divider"></div>            -->
+<!--            <a class="dropdown-item" href="#">Opción 6</a>-->
+<!--            <a class="dropdown-item" href="#">Opción 7</a>-->
+<!--            <a class="dropdown-item" href="#">Opción 8</a>            -->
+<!--        </div> -->
+<!--    </li>-->
+    <li class="nav-item">
+<!--    necesitamos que index pueda recibir un parametro para restablecer la _SESSION-->
+        <a class="nav-link" href="{$ruta}../index.php"> 
+            <i class="fas fa-fw fa-chart-area"></i>
+            <span>Salir</span>
+        </a>
+    </li>
+</ul>
+EOD;
+
+    echo $html;
+}
 ?>
+

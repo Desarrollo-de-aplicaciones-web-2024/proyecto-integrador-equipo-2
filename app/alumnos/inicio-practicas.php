@@ -4,6 +4,35 @@ require '../../config/db.php';
 require_once '../../config/global.php';
 define('RUTA_INCLUDE', '../../');
 
+$mat_alumno = isset($_SESSION['matricula']) ? $_SESSION['matricula'] : null;
+
+if (!$mat_alumno) {
+    header('Location: ../index.php');
+    exit();
+}
+
+//checar si esta en revision
+$sql_revision = "select * from practicas WHERE matricula_alumno = '$mat_alumno' AND estatus = 'revision'";
+$res = mysqli_query($conexion, $sql_revision);
+if ($res && mysqli_num_rows($res) > 0) {
+    header('Location: mis-practicas.php');
+    exit();
+}
+
+//obtener datos del alumno
+$sql_alumno = "SELECT a.nombre, a.semestre, p.estatus FROM alumnos a LEFT JOIN practicas p ON a.matricula = p.matricula_alumno WHERE a.matricula = '$mat_alumno';";
+$res = mysqli_query($conexion, $sql_alumno);
+
+if ($res && mysqli_num_rows($res) > 0) {
+    $row = mysqli_fetch_assoc($res);
+    $nombre = $row['nombre'];
+    $semestre = $row['semestre'];
+    $practica_status = $row['estatus'];
+} else {
+    header('Location: ../index.php');
+    exit();
+}
+
 $status = isset($_SESSION['status']) ? $_SESSION['status'] : null;
 $mensaje = isset($_SESSION['mensaje']) ? $_SESSION['mensaje'] : null;
 $empresa = isset($_GET['empresa-id']) ? $_GET['empresa-id'] : null;
@@ -23,7 +52,6 @@ $puesto_supervisor = isset($_GET['puesto-supervisor']) ? $_GET['puesto-superviso
 
 
 $empresa_post = isset($_POST['empresa-id']) ? $_POST['empresa-id'] : null;
-$mat_alumno = "202160023";
 
 //ver si el alumno tiene una practica en estatus pendiente.
 $sql_practica = "select * from practicas where matricula_alumno = $mat_alumno and estatus = 'pendiente'";
@@ -123,7 +151,7 @@ if ($res) {
 
 <div id="wrapper">
 
-    <?php getSidebar() ?>
+    <?php getSidebarAlumno('../alumnos/', $semestre, $practica_status); ?>
 
     <div id="content-wrapper">
         <div class="container-fluid">
@@ -429,8 +457,8 @@ if ($res) {
                                 parseInt(duracion.value) < 3 || duracion.value.trim() === '' ? clases(duracion,1) : clases(duracion,0);
                                 departamento.value.trim() === '' ? clases(departamento,1) : clases(departamento,0);
                                 parseInt(horas.value) < 240 || horas.value.trim() === '' ? clases(horas,1) : clases(horas,0);
-                                validarFechaPasada(fecha_inicio.value) ? clases(fecha_inicio,1) : clases(fecha_inicio,0);
-                                validarFechaPasada(fecha_fin.value) ? clases(fecha_fin,1) : clases(fecha_fin,0);
+//                                validarFechaPasada(fecha_inicio.value) ? clases(fecha_inicio,1) : clases(fecha_inicio,0);
+//                                validarFechaPasada(fecha_fin.value) ? clases(fecha_fin,1) : clases(fecha_fin,0);
                                 horario_entrada.value.trim() === '' ? clases(horario_entrada,1) : clases(horario_entrada,0);
                                 horario_salida.value.trim() === '' ? clases(horario_salida,1) : clases(horario_salida,0);
                                 nombre_supervisor.value.trim() === '' ? clases(nombre_supervisor,1) : clases(nombre_supervisor,0);

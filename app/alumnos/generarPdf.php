@@ -35,7 +35,7 @@ $direccion = $res_data['direccion_empresa'];
 $telefono = $res_data['telefono_empresa'];
 $correo = $res_data['email_empresa'];
 $nombre_alumno = $res_data['nombre_alumno'];
-$sexo_alumno = $res_data['sexo_alumno'] == 'M'? 'Hombre' : 'Mujer';
+$sexo_alumno = $res_data['sexo_alumno'] == 'H'? 'Hombre' : 'Mujer';
 $semestre_alumno = $res_data['semestre_alumno'];
 
 $fecha = new DateTime();
@@ -197,7 +197,7 @@ $data = "
     <table class='titulo'>
         <tr>
             <td>
-                <img src='https://upload.wikimedia.org/wikipedia/commons/6/62/Logo_de_la_Universidad_Crist%C3%B3bal_Col%C3%B3n.svg' height='100px'>
+                <img src='https://upload.wikimedia.org/wikipedia/commons/6/62/Logo_de_la_Universidad_Crist%C3%B3bal_Col%C3%B3n.svg' height='50px'>
             </td>
             <td>
                 <h1>$nombre_carrera<br><span>Solicitud para realización de Prácticas Profesionales</span></h1>

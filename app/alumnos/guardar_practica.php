@@ -2,9 +2,9 @@
 session_start();
 require '../../config/db.php';
 
-$id_practica = $_POST['practica-id'];
-$editar = $_POST['editar'];
-$matAlumno = '202160023'; //matricula del usuario qeu esta logeado en el sistema
+$id_practica = $_POST['practica-id'] ?? null;
+$editar = $_POST['editar'] ?? null;
+$matAlumno = $_SESSION['matricula'];
 $status = 'pendiente';
 $id_empresa =$_POST['empresa-id'];
 $duracion = $_POST['duracion'];
@@ -43,7 +43,7 @@ if (!empty($matAlumno) && !empty($id_empresa) && !empty($duracion) && !empty($no
 
     $fecha_actual = date('Y-m-d');
 
-    $Location = $editar ? "Location: editar-practica.php?" . $query_params : "Location: inicio-practicas?" . $query_params;
+    $Location = $editar ? "Location: editar-practica.php?" . $query_params : "Location: inicio-practicas.php?" . $query_params;
 
     //validar que el usuario pertenezca a la carreara que ingresó
     $sql_select_carreras = "select * from carrera_alumno WHERE matricula_alumno = '$matAlumno'";
@@ -75,9 +75,29 @@ if (!empty($matAlumno) && !empty($id_empresa) && !empty($duracion) && !empty($no
         exit();
     }
 
+    if ($fecha_fin === $fecha_inicio) {
+        $_SESSION['status'] = 'error';
+        $_SESSION['mensaje'] = 'La fecha de inicio no puede ser igual a la fecha de fin.';
+        header($Location);
+        exit();
+    }
+
     if ($fecha_fin < $fecha_inicio) {
         $_SESSION['status'] = 'error';
         $_SESSION['mensaje'] = 'La fecha de fin no puede ser anterior a la fecha de inicio.';
+        header($Location);
+        exit();
+    }
+
+    $fecha_inicio_dt = new DateTime($fecha_inicio);
+    $fecha_fin_dt = new DateTime($fecha_fin);
+    $fecha_esperada_dt = clone $fecha_inicio_dt;
+    $fecha_esperada_dt->modify("+{$duracion} months");
+
+
+    if ($fecha_fin_dt < $fecha_esperada_dt) {
+        $_SESSION['status'] = 'error';
+        $_SESSION['mensaje'] = 'La fecha de fin debe de coincidir con la duración.';
         header($Location);
         exit();
     }
@@ -134,6 +154,7 @@ if (!empty($matAlumno) && !empty($id_empresa) && !empty($duracion) && !empty($no
 
     } else {
         try {
+            echo "no tan rapido";
             $sql_insert = "insert into practicas (matricula_alumno,estatus,id_empresa,duracion,supervisor,puesto_supervisor,fecha_inicio,fecha_fin,puesto,departamento,horas,horario_entrada,horario_salida,id_carrera,actividades) values ('$matAlumno','$status','$id_empresa','$duracion','$nombre_supervisor','$puesto_supervisor','$fecha_inicio','$fecha_fin','$puesto_tentativo','$departamento','$horas','$horario_entrada','$horario_salida','$id_carrera','$actividades')";
             if (!mysqli_query($conexion, $sql_insert)) {
                 $_SESSION['status'] = 'error';
