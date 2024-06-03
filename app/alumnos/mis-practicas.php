@@ -125,7 +125,7 @@ if ($res && mysqli_num_rows($res) > 0) {
                         case "activo":
                             $btnType = "btn-success";
                             $btnText = "Activo";
-                            $destination = '#';
+                            $destination = '../consultas/procesos/seguimiento.php';
                             break;
 
                         case "cancelado":
