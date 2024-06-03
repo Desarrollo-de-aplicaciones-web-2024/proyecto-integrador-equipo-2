@@ -5,6 +5,7 @@ $nombre  = $_POST['nombre'];
 $sexo = $_POST['sexo'];
 $semestre = $_POST['semestre'];
 $password = $_POST['password'];
+$password2 = $_POST['password2'];
 $carrera = $_POST['carrera'];
 $error = '';
 $strmatri = (string)($matricula);
@@ -39,6 +40,8 @@ if(empty($matricula) || empty($nombre) || empty($sexo) || empty($semestre) || em
     $error = 'El semestre en curso para las prácticas debe ser entre 4to y 10mo';
 }elseif($result == ''){
     $error = 'La carrera seleccionada no existe';
+}elseif($password != $password2){
+    $error = 'Las contraseñas no coinciden';
 }else{
     $pass_en_md5 = md5($password);
 $sql ="insert into alumnos (matricula, nombre, sexo, semestre, password) values ('$matricula','$nombre','$sexo','$semestre','$pass_en_md5')";

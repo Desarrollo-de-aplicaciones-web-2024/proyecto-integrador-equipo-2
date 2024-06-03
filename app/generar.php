@@ -1,3 +1,29 @@
+<?php
+
+require '../config/db.php';
+
+global $conexion;
+
+if (empty($_GET['token'])) {
+    die('Token no válido.');
+}
+
+$query = "SELECT * FROM password_resets WHERE token = ? AND expiry > NOW()";
+
+if ($stmt = mysqli_prepare($conexion, $query)) {
+    mysqli_stmt_bind_param($stmt, "s", $_GET['token']);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    $data = mysqli_fetch_assoc($result);
+    mysqli_stmt_close($stmt);
+}
+
+if (empty($data)) {
+    die('Token no válido.');
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -9,7 +35,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Universidad Cristóbal Colón</title>
+    <title>Recuperar contraseña</title>
 
     <!-- Custom fonts for this template-->
     <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -26,24 +52,18 @@
     <div class="card card-login mx-auto mt-5">
         <div class="card-header">Recuperar contraseña</div>
         <div class="card-body">
-            <div class="text-center mb-4">
-                <h4>¿Olvidó su contraseña?</h4>
-                <p>Se enviará un correo electrónico con instrucciones para recuperar el acceso a su cuenta.</p>
-                <p>Ingrese su matrícula.</p>
-            </div>
-            <form action="recuperacion.php" method="post">
+            <form action="verificacion.php" method="post">
                 <div class="form-group">
                     <div class="form-label-group">
-                        <p>Matrícula</p>
-                        <input type="text" id="matricula" name="matricula" class="form-control-sm"
+                        <p>Codigo</p>
+                        <input type="number" id="codigo" name="codigo" class="form-control-sm"
                                style="border-radius: 15px; height: 35px;">
+                        <input type="hidden" id="matricula" name="matricula" value="<?= $data['matricula'] ?>"
+                               class="form-control-sm">
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary btn-block" href="recuperacion.php">Recuperar</button>
+                <button type="submit" class="btn btn-primary btn-block">Verificar</button>
             </form>
-            <div class="text-center">
-                <a class="d-block small mt-3" href="index.php">Página de inicio</a>
-            </div>
         </div>
     </div>
 </div>
