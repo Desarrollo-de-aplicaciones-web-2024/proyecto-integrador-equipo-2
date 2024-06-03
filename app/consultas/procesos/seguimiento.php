@@ -27,6 +27,8 @@ mysqli_stmt_close($stmt);
     <?php getTopIncludes(RUTA_INCLUDE) ?>
 
     <style>
+
+        /*Esto es el cuadrado del centro :) */
         #cuadroCentral {
             width: 300px;
             height: 300px;
@@ -61,12 +63,13 @@ mysqli_stmt_close($stmt);
             border-radius: 50%;
             margin: 0px 10px;
             border: 2px solid #1a237e;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #1a237e; /* Color de los números */
+            font-weight: bold; /* Para que los números sean más visibles */
         }
 
-        .circulo.verde {
-            background-color: #4caf50;
-            border-color: #4caf50;
-        }
 
         #subirReporte {
             background-color: #1a237e;
@@ -120,11 +123,9 @@ mysqli_stmt_close($stmt);
             margin-bottom: 10px;
         }
 
-        #modalReporte .actividades-realizadas,
-        #modalReporte .observaciones {
-            margin-bottom: 10px;
-            height: 150px;
-            overflow-y: auto;
+        #modalReporte .actividades-realizadas textarea {
+            width: 100%; /* Ancho del 100% del contenedor */
+            max-width: 100%; /* Ancho máximo del 100% del contenedor */
         }
 
         #modalReporte .btn-guardar {
@@ -136,6 +137,24 @@ mysqli_stmt_close($stmt);
             background-color: #d32f2f;
             color: #ffffff;
         }
+
+        #modalReporte .modal-title,
+        #modalReporte .fecha-limite,
+        #modalReporte .subir-reporte,
+        #modalReporte .datos-alumno,
+        #modalReporte .horas-realizadas,
+        #modalReporte .actividades-realizadas {
+            color: #1a237e; /* Tengo sueño */
+        }
+
+        #breadcrumb-nav {
+            background-color: #1a237e; /* Fondo azul marino */
+            color: #1a237e;
+            font-weight: bold; /* Texto en negritas */
+            font-family: Arial, sans-serif; /* Fuente distinta */
+            padding: 10px; /* Añadir un poco de espacio alrededor del texto */
+        }
+
     </style>
 </head>
 
@@ -151,9 +170,9 @@ mysqli_stmt_close($stmt);
 
         <div class="container-fluid">
 
-            <nav aria-label="breadcrumb">
+            <nav aria-label="breadcrumb" id="breadcrumb-nav">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item">Tu progreso</li>
+                    <li class="breadcrumb-item">Checa tu progreso actual de prácticas profesionales</li>
                 </ol>
             </nav>
 
@@ -163,16 +182,23 @@ mysqli_stmt_close($stmt);
                     <?php
                     // Obtener un nombre aleatorio de la tabla de alumnos
                     $nombreAleatorio = $data[array_rand($data)][1];
+                    $query = "SELECT * FROM alumnos WHERE nombre = ?";
+                    $stmt = mysqli_prepare($conexion, $query);
+                    mysqli_stmt_bind_param($stmt, 's', $nombreAleatorio);
+                    mysqli_stmt_execute($stmt);
+                    $result = mysqli_stmt_get_result($stmt);
+                    $alumno = mysqli_fetch_assoc($result);
+                    mysqli_stmt_close($stmt);
                     // Obtener la fecha de hoy
                     $fechaHoy = date('d/m/Y');
                     ?>
                     <div id="nombreAlumno"><?php echo $nombreAleatorio ?></div>
                     <div>Inicio: <?php echo $fechaHoy ?></div>
                     <div id="progreso">
-                        <div class="circulo"></div>
-                        <div class="circulo"></div>
-                        <div class="circulo"></div>
-                        <div class="circulo"></div>
+                        <div class="circulo">1</div>
+                        <div class="circulo">2</div>
+                        <div class="circulo">3</div>
+                        <div class="circulo">4</div>
                     </div>
                     <button id="subirReporte">Subir Reporte</button>
                 </div>
@@ -181,6 +207,7 @@ mysqli_stmt_close($stmt);
             </div>
 
             <!-- Modal Reporte Mensual -->
+
             <div class="modal fade" id="modalReporte" tabindex="-1" role="dialog" aria-labelledby="modalReporteTitle" aria-hidden="true">
                 <div class="modal-dialog modal-xl" role="document">
                     <div class="modal-content">
@@ -189,23 +216,21 @@ mysqli_stmt_close($stmt);
                             <div class="fecha-limite">Fecha Límite: <?php echo date('d/m/Y', strtotime('+1 month')) ?></div>
                         </div>
                         <div class="modal-body">
-
-                            <div class="subir-reporte">Subir Reporte <button class="subir-archivo">Subir Archivo</button></div>
-                            <div class="datos-alumno">Nombre: <?php echo $nombreAleatorio ?> | Matrícula: Matricula | Semestre: Semestre</div>
-                            <div class="horas-realizadas">Horas realizadas: <input type="number"></input> Periodo reportado: <input type="date"> - <input type="date" readonly></div>
+                            <form action="archivos.php" method="post" enctype="multipart/form-data">
+                            <div class="subir-reporte">Subir Reporte <input type="file" name="socrates"></div>
+                            <div class="datos-alumno">Nombre: <?php echo $alumno['nombre'] ?> | Matrícula: <?php echo $alumno['matricula'] ?> | Semestre: <?php echo $alumno['semestre'] ?></div>
+                            <div class="horas-realizadas">Horas realizadas: <input type="number"></input> Periodo reportado: <input type="date"> - <input type="date"></div>
                             <div class="actividades-realizadas">
                                 <div>Actividades realizadas durante el mes</div>
                                 <textarea></textarea>
                             </div>
-                            <div class="observaciones">
-                                <div>Observaciones por parte del supervisor</div>
-                                <textarea></textarea>
-                            </div>
+                                <div class="modal-footer">
+                                    <input type="submit" class="btn btn-guardar">
+                                    <button type="button" class="btn btn-cancelar" data-dismiss="modal">Cancelar</button>
+                                </div>
+                            </form>
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-guardar">Guardar</button>
-                            <button type="button" class="btn btn-cancelar" data-dismiss="modal">Cancelar</button>
-                        </div>
+
                     </div>
                 </div>
             </div>
@@ -236,6 +261,7 @@ mysqli_stmt_close($stmt);
         $('#modalReporte').modal('show');
     });
 </script>
+
 
 </body>
 
