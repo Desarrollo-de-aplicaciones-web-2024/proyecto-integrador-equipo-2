@@ -237,6 +237,10 @@ $pdfFiles = array_filter($files, function($file) use ($directory) {
                         <p id="carta-aceptacion-name"></p>
                     </div>
                 </div>
+
+
+
+
                 <div class='form-group col-md-12'>
                     <div class='form-row justify-content-start align-items-center'>
                         <button type="submit" class="btn btn-primary">Enviar</button>

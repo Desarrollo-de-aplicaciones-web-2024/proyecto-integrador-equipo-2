@@ -73,9 +73,14 @@ if ($res && mysqli_num_rows($res) > 0) {
             </nav>
 
             <!-- Page Content -->
-            <h1>Mis prácticas</h1>
+            <div class="row align-items-center justify-content-between mx-2">
+                <h1>Mis prácticas</h1>
 
-            <a href="inicio-practicas.php">iniciar nuevo periodo de practicas</a>
+                <div>
+                    <a class="btn btn-outline-primary" href="inicio-practicas.php">Nuevo periodo de practicas</a>
+                </div>
+            </div>
+
 
             <hr>
             <br>

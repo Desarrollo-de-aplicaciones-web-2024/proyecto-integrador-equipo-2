@@ -58,11 +58,12 @@ function getNavbar($ruta = ''){
     $html = <<<EOD
 <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
 
-    <a class="navbar-brand mr-1" href="{$ruta}index.php"><img src="/img/favicon.ico" width="20" height="20"/> </a>
 
     <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
         <i class="fas fa-bars"></i>
     </button>
+    <a class="navbar-brand mr-1" href="{$ruta}index.php"><img src="/img/logo_ucc.png" width="150" height="50"/> </a>
+    
 
     <!-- Navbar Search -->
     <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
@@ -200,7 +201,7 @@ function getSidebarAlumno($ruta = '', $semestre, $practica){
         $html .=<<<EOD
         <li class="nav-item">
             <a class="nav-link" href="{$ruta}mis-practicas.php">
-                <i class="fas fa-calculator"></i>
+                <i class="fas fa-briefcase"></i>
                 <span>Mis prácticas</span>
             </a>
         </li>
@@ -211,7 +212,7 @@ function getSidebarAlumno($ruta = '', $semestre, $practica){
         $html .=<<<EOD
         <li class="nav-item">
             <a class="nav-link" href="{$ruta}inicio-practicas.php">
-                <i class="fas fa-calculator"></i>
+                <i class="fas fa-briefcase"></i>
                 <span>Inicio de prácticas</span>
             </a>
         </li>
@@ -223,33 +224,14 @@ function getSidebarAlumno($ruta = '', $semestre, $practica){
 
     <li class="nav-item">
         <a class="nav-link" href="{$ruta}alumno-convocatorias.php">
-            <i class="fas fa-truck"></i>
+            <i class="fas fa-bullhorn"></i>
             <span>Convocatorias</span>
         </a>
     </li>
-<!--    <li class="nav-item dropdown">-->
-<!--        <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown"-->
-<!--           aria-haspopup="true" aria-expanded="false">-->
-<!--            <i class="fas fa-fw fa-folder"></i>-->
-<!--            <span>Catálogos</span>-->
-<!--        </a>-->
-<!--        <div class="dropdown-menu" aria-labelledby="pagesDropdown">                        -->
-<!--            <a class="dropdown-item" href="#">Opción 1</a>-->
-<!--            <a class="dropdown-item" href="#">Opción 2</a>            -->
-<!--            <a class="dropdown-item" href="#">Opción 3</a>-->
-<!--            <div class="dropdown-divider"></div>        -->
-<!--            <a class="dropdown-item" href="#">Opción 4</a>            -->
-<!--            <a class="dropdown-item" href="#">Opción 5</a>-->
-<!--            <div class="dropdown-divider"></div>            -->
-<!--            <a class="dropdown-item" href="#">Opción 6</a>-->
-<!--            <a class="dropdown-item" href="#">Opción 7</a>-->
-<!--            <a class="dropdown-item" href="#">Opción 8</a>            -->
-<!--        </div> -->
-<!--    </li>-->
     <li class="nav-item">
 <!--    necesitamos que index pueda recibir un parametro para restablecer la _SESSION-->
         <a class="nav-link" href="{$ruta}../index.php"> 
-            <i class="fas fa-fw fa-chart-area"></i>
+            <i class="fas fa-fw fa-sign-out-alt"></i>
             <span>Salir</span>
         </a>
     </li>
