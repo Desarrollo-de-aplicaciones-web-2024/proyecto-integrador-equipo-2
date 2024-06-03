@@ -226,7 +226,7 @@ mysqli_stmt_close($stmt);
                             </div>
                                 <div class="modal-footer">
                                     <input type="submit" class="btn btn-guardar">
-                                    <button type="button" class="btn btn-cancelar" data-dismiss="modal">Cancelar</button>
+                                    <button type="button" class="btn btn-cancelar" data-dismiss="modal">CANCELAR</button>
                                 </div>
                             </form>
                         </div>

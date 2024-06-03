@@ -7,4 +7,5 @@
     $tipoArchivo = strtolower(pathinfo($archivo, PATHINFO_EXTENSION));
 
     echo "Su reporte ha sido enviado";
+    echo $tipoArchivo;
 ?>
