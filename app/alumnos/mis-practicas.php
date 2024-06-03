@@ -39,7 +39,6 @@ if ($res && mysqli_num_rows($res) > 0) {
 <html lang="es">
 
 <head>
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -47,9 +46,16 @@ if ($res && mysqli_num_rows($res) > 0) {
     <meta name="author" content="">
 
     <title><?php echo PAGE_TITLE ?></title>
-
-
     <?php getTopIncludes(RUTA_INCLUDE ) ?>
+
+    <style>
+        .card {
+            transition: all 0.3s ease-in-out;
+        }
+        .card-body {
+            transition: all 0.3s ease-in-out;
+        }
+    </style>
 </head>
 
 <body id="page-top">
@@ -131,29 +137,77 @@ if ($res && mysqli_num_rows($res) > 0) {
                         case "pendiente":
                             $btnType = "btn-primary";
                             $btnText = "Editar";
-                            $destination = 'carga-documentos-iniciales.php';
+                            $destination = 'editar-documentos-iniciales.php';
                             break;
                     }
 
-                    echo <<<EOD
-                        <div class="card w-75 mx-auto mb-3">
-                          <div class="card-body row justify-content-around align-items-center">
+                    //obtener los dccumentos
+                    $sql_documentos = "SELECT * from documentos WHERE id_practica = {$practica['id']};";
+                    $res_documentos = mysqli_query($conexion, $sql_documentos);
 
-                            <div class="row w-50 justify-content-between align-items-center">
-                                <div>
+                    while ($documento = mysqli_fetch_assoc($res_documentos)) {
+                        if ($documento['tipo'] == 'solicitud') {
+                            $solicitud_motivos = $documento['motivo'];
+                            $solicitud_check = $documento['motivo'] ? "<i class='fas fa-times-circle' style='color: red;'></i>"  : "<i class='fas fa-check-circle' style='color: green;'></i>";
+                        }
+
+                        if ($documento['tipo'] == 'plan-trabajo') {
+                            $plan_motivos = $documento['motivo'];
+                            $plan_check = $documento['motivo'] ? "<i class='fas fa-times-circle' style='color: red;'></i>"  : "<i class='fas fa-check-circle' style='color: green;'></i>";
+                        }
+
+                        if ($documento['tipo'] == 'carta-aceptacion') {
+                            $carta_motivos = $documento['motivo'];
+                            $carta_check = $documento['motivo'] ? "<i class='fas fa-times-circle' style='color: red;'></i>"  : "<i class='fas fa-check-circle' style='color: green;'></i>";
+                        }
+                    }
+
+                    if (empty($solicitud_motivos) && empty($plan_motivos) && empty($carta_motivos)) {
+                        $motivos = "<h5>Todos los documentos en orden</h5>";
+
+
+                    } else {
+                        $motivos = <<<EOD
+                                    <p>{$solicitud_check} <b>Solicitud de prácticas:</b> {$solicitud_motivos}</p>
+                                    <p>{$plan_check} <b>Plan de trabajo:</b> {$plan_motivos}</p>
+                                    <p>{$carta_check} <b>Carta de aceptacion:</b> {$carta_motivos}</p>
+                                     
+                                EOD;
+                    }
+
+
+
+
+                    //si alguno de los documentos esta rechazado, etnocens inficar con el mensaje
+
+
+                    echo <<<EOD
+                            <div class="card w-75 mx-auto mb-3">
+                              <div class="card-body row justify-content-around align-items-center">
+                                <div class="row w-50 justify-content-between align-items-center">
+                                  <div>
                                     <h5 class="card-title" style="margin-bottom: 0;">{$empresa['nombre']}</h5>
                                     <p class="card-text" style="margin-bottom: 0; color: #7E7E7E; font-size: 14px ">{$empresa['nombre_giro']}</p>
-                                </div>
-
-                                <div>
-                                    <p class="card-text" style="margin-bottom: 0;font-size: 14px">Periodo de prácticas</p>
+                                  </div>
+                                  <div>
+                                    <p class="card-text" style="margin-bottom: 0; font-size: 14px">Periodo de prácticas</p>
                                     <p class="card-text" style="margin-bottom: 0; color: #7E7E7E; font-size: 14px">{$fecha_inicio_formateada} <b>-</b> {$fecha_fin_formateada}</p>
+                                  </div>
                                 </div>
+                                <a href="{$destination}" class="btn {$btnType}">{$btnText}</a>
+                                  <i type="button" class="fas fa-chevron-down text-dark" data-toggle="collapse" data-target="#collapse-{$practica['id']}" aria-expanded="false" aria-controls="collapse-{$practica['id']}"></i>
+                                </button>
+                              </div>
+                              <div class="collapse" id="collapse-{$practica['id']}">
+                                <div class="card card-body">
+                                    {$motivos}
+                                </div>
+                              </div>
                             </div>
-                            <a href={$destination} class="btn {$btnType}">{$btnText}</a>
-                          </div>
-                        </div>
-                        EOD;
+                            EOD;
+
+
+
                 }
             ?>
 

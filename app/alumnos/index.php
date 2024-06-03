@@ -123,7 +123,7 @@ HTML;
                     <div class="overlay"></div>
                     <img class="d-block w-100" src="{$src}" alt="Slide {$i}">
                     <div class="carousel-caption d-none d-md-block">
-                    <h5><a href="convocatorias.php" style="color: white; text-decoration: none">{$row['titulo']}</a></h5>
+                    <h5><a href="alumno-convocatorias.php" style="color: white; text-decoration: none">{$row['titulo']}</a></h5>
                         
                         <p>Vacantes disponibles: {$vacantes_disponibles}</p>
                     </div>

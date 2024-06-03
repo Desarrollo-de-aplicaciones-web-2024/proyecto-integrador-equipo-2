@@ -102,7 +102,6 @@ $res = mysqli_query($conexion,$query);
                                                         <p><strong>Vacantes: </strong>{$vacantes}</p>
                                                     </li>
                                                 </ul>
-                                                <p class="card-text"><small class="text-muted">Última actualización hace 3 minutos</small></p>
                                             </div>
                                         </div>
                                     </div>

@@ -75,6 +75,27 @@ unset($_SESSION['status']);
 unset($_SESSION['mensaje']);
 
 //precargar los archivos
+$sql_documentos = "SELECT * from documentos WHERE id_practica = $practica_id;";
+$res_documentos = mysqli_query($conexion, $sql_documentos);
+
+$documento_solicitud = '';
+$documento_plan = '';
+$documento_carta = '';
+
+while ($row = mysqli_fetch_assoc($res_documentos)){
+
+    if ($row['tipo'] === 'solicitud' && $row['estatus'] != 'rechazado'){
+        $documento_solicitud = "/app/servicio/inicial/".$row['ruta'];
+    }
+
+    if ($row['tipo'] === 'plan-trabajo' && $row['estatus'] != 'rechazado'){
+        $documento_plan = "..".$row['ruta'];
+    }
+
+    if ($row['tipo'] === 'carta-aceptacion' && $row['estatus'] != 'rechazado'){
+        $documento_carta = "..".$row['ruta'];
+    }
+}
 $directory = "../servicio/inicial/";
 $files = scandir($directory);
 
@@ -210,21 +231,37 @@ $pdfFiles = array_filter($files, function($file) use ($directory) {
             <h2>Carga de documentos</h2>
             <hr>
 
-            <form action="subirDocumentos.php" method="post" enctype="multipart/form-data">
+            <form action="editar-documentos.php" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="practica-id" id="practica-id" value=<?php echo $practica_id?>>
 
                 <div class="form-group col-md-3">
                     <div class="custom-file ">
-                        <label class="custom-file-label" for="solicitud">Solicitud de inicio de prácticas</label>
-                        <input required type="file" class="custom-file-input" id="solicitud" name="solicitud">
+
+                        <?php if ($documento_solicitud === ''){
+                            echo '<label class="custom-file-label" for="solicitud">Solicitud de inicio de prácticas</label>';
+                            echo '<input required type="file" class="custom-file-input" id="solicitud" name="solicitud">';
+                        } else {
+                            // Obtén solo el nombre del archivo
+                            $nombre_archivo = basename($documento_solicitud);
+                            echo "<a href='/app/servicio/inicial/" . urlencode($nombre_archivo) . "'>Solicitud</a>";
+                        }?>
                         <p id="solicitud-name"></p>
                     </div>
                 </div>
 
                 <div class="form-group col-md-3">
                     <div class="custom-file ">
-                        <label class="custom-file-label" for="plan-trabajo">Plan de trabajo</label>
-                        <input required type="file" class="custom-file-input" id="plan-trabajo" name="plan-trabajo">
+
+                        <?php if ($documento_plan === ''){
+                            echo '<label class="custom-file-label" for="plan-trabajo">Plan de trabajo</label>';
+                            echo '<input required type="file" class="custom-file-input" id="plan-trabajo" name="plan-trabajo">';
+                        }
+                        else {
+                            // Obtén solo el nombre del archivo
+                            $nombre_archivo = basename($documento_plan);
+                            echo "<a href='/app/servicio/inicial/" . urlencode($nombre_archivo) . "'>Plan de trabajo</a>";
+                        } ?>
+
                         <p id="plan-trabajo-name"></p>
 
                     </div>
@@ -232,8 +269,17 @@ $pdfFiles = array_filter($files, function($file) use ($directory) {
 
                 <div class="form-group col-md-3">
                     <div class="custom-file">
-                        <label class="custom-file-label" for="carta-aceptacion">Carta de aceptación</label>
-                        <input required type="file" class="custom-file-input" id="carta-aceptacion" name="carta-aceptacion">
+
+                        <?php if ($documento_carta === ''){
+                            echo '<label class="custom-file-label" for="carta-aceptacion">Carta de aceptación</label>';
+                            echo '<input required type="file" class="custom-file-input" id="carta-aceptacion" name="carta-aceptacion">';
+                        }
+                        else {
+                            // Obtén solo el nombre del archivo
+                            $nombre_archivo = basename($documento_carta);
+                            echo "<a href='/app/servicio/inicial/" . urlencode($nombre_archivo) . "'>Carta de aceptacion</a>";
+                        } ?>
+
                         <p id="carta-aceptacion-name"></p>
                     </div>
                 </div>
