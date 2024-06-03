@@ -15,4 +15,27 @@ class Practica {
             return null;
         }
     }
+
+    static function editById($id, $data) {
+        global $conexion;
+        $query = "UPDATE practicas SET ";
+        $params = [];
+        foreach ($data as $key => $value) {
+            $query .= "$key = ?, ";
+            $params[] = &$data[$key];
+        }
+        $query = substr($query, 0, -2);
+        $query .= " WHERE id = ?";
+        $params[] = &$id;
+        $types = str_repeat('s', count($params));
+        $stmt = mysqli_prepare($conexion, $query);
+        if ($stmt) {
+            mysqli_stmt_bind_param($stmt, $types, ...$params);
+            mysqli_stmt_execute($stmt);
+            mysqli_stmt_close($stmt);
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

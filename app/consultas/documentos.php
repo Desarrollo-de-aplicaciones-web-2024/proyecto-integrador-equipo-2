@@ -90,6 +90,26 @@ class Documento
         }
     }
 
+    static function getAllByPractica(int $idPractica){
+        global $conexion;
+        $query = "SELECT * FROM documentos WHERE id_practica = ?";
+        if ($stmt = mysqli_prepare($conexion, $query)) {
+            mysqli_stmt_bind_param($stmt, "i", $idPractica);
+            mysqli_stmt_execute($stmt);
+            $result = mysqli_stmt_get_result($stmt);
+
+            $documentos = array();
+            while ($row = mysqli_fetch_assoc($result)) {
+                $documentos[] = $row;
+            }
+
+            mysqli_stmt_close($stmt);
+            return $documentos;
+        } else {
+            return null;
+        }
+    }
+
 
 
 

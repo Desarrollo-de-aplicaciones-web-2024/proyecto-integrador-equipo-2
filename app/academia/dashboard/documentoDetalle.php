@@ -43,7 +43,7 @@ define('RUTA_INCLUDE', '../../../');
 
     <div id="content-wrapper">
 
-        <div class="container-fluid mt-5">
+        <div class="container-fluid mt-2">
             <div class="row">
                 <!-- Metadata Column -->
                 <div class="col-md-4 mb-4">
@@ -83,7 +83,7 @@ define('RUTA_INCLUDE', '../../../');
                 <!-- PDF Preview Column -->
                 <div class="col-md-8 mb-4 pb-4">
                     <h4>Vista previa</h4>
-                    <iframe src="http://proyecto-integrador-equipo-2.test/storage/reports/example.pdf" width="100%" height="100%"></iframe>
+                    <iframe src="http://proyecto-integrador-equipo-2.test/app <?= $document['ruta'] ?>" width="100%" height="800" ></iframe>
                 </div>
             </div>
         </div>
@@ -102,7 +102,7 @@ define('RUTA_INCLUDE', '../../../');
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                            <button type="submit" class="btn btn-danger">Rechazar</button>
+                            <button type="submit" class="btn btn-danger" name="reject">Rechazar</button>
                         </div>
                     </form>
                 </div>
