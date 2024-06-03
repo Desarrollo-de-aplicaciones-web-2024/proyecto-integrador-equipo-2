@@ -115,6 +115,13 @@ $result = $conexion->query($sql);
                 </div>
             </form>
         </div>
+        <div class="container">
+            <form action="upload.php" method="post" enctype="multipart/form-data">
+                <label for="csv_file">Selecciona el archivo CSV:</label>
+                <input type="file" name="csv_file" id="csv_file" accept=".csv" required>
+                <button type="submit" class="btn btn-success">Subir</button>
+            </form>
+        </div>
         <!-- /.container -->
 
         <?php getFooter() ?>
