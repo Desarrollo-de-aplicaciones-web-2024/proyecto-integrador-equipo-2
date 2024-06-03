@@ -1,3 +1,29 @@
+<?php
+
+require '../config/db.php';
+
+global $conexion;
+
+if (empty($_GET['token'])) {
+    die('Token no válido.');
+}
+
+$query = "SELECT * FROM password_resets WHERE token = ? AND expiry > NOW()";
+
+if ($stmt = mysqli_prepare($conexion, $query)) {
+    mysqli_stmt_bind_param($stmt, "s", $_GET['token']);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    $data = mysqli_fetch_assoc($result);
+    mysqli_stmt_close($stmt);
+}
+
+if (empty($data)) {
+    die('Token no válido.');
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -9,7 +35,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Universidad Cristóbal Colón</title>
+    <title>Recuperar contraseña</title>
 
     <!-- Custom fonts for this template-->
     <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -32,14 +58,12 @@
                         <p>Codigo</p>
                         <input type="number" id="codigo" name="codigo" class="form-control-sm"
                                style="border-radius: 15px; height: 35px;">
-                        <input type="hidden" id="email" name="email" class="form-control-sm">
-                        <input type="hidden" id="token" name="token" class="form-control-sm">
-                        <input type="hidden" id="matricula" name="matricula" class="form-control-sm">
+                        <input type="hidden" id="matricula" name="matricula" value="<?= $data['matricula'] ?>"
+                               class="form-control-sm">
                     </div>
                 </div>
                 <button type="submit" class="btn btn-primary btn-block">Verificar</button>
             </form>
-
         </div>
     </div>
 </div>
