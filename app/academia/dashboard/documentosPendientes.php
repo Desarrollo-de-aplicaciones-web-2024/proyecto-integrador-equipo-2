@@ -80,7 +80,7 @@ define('RUTA_INCLUDE', '../../../');
                     <tbody>
 
                     <?php foreach (Documento::getAll() as $documento): ?>
-                        <?php if ($documento['estatus'] != 'pendiente') continue; ?>
+                        <?php if ($documento['estatus'] != 'pendiente' or in_array($documento['practica']['estatus'], ['cancelado', 'finalizado'])) continue; ?>
                         <tr>
                             <td><?php echo $documento['practica']['alumno']['nombre'] ?></td>
                             <td><?php echo $documento['practica']['alumno']['semestre'] ?></td>
@@ -91,6 +91,7 @@ define('RUTA_INCLUDE', '../../../');
                                 <a href="documentoDetalle.php?id=<?= $documento['id'] ?>" class="btn btn-link btn-sm">Ver</a>
                                 <a href="#" class="btn btn-link btn-sm">Editar</a>
                                 <a href="#" class="btn btn-link btn-sm">Eliminar</a>
+                                <a href="cancelar_practica.php?id=<?= $documento['practica']['id'] ?>" class="btn btn-link btn-sm">Cancelar</a>
                             </td>
                         </tr>
                     <?php endforeach; ?>
