@@ -39,6 +39,28 @@ if ($res && mysqli_num_rows($res) > 0) {
 
 
     <?php getTopIncludes(RUTA_INCLUDE ) ?>
+
+    <style>
+        .carousel-item {
+            position: relative;
+        }
+
+        .carousel-item .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5); /* Overlay negro con 50% de opacidad */
+            z-index: 1;
+        }
+
+        .carousel-item img {
+            width: 100%;
+            height: auto;
+        }
+    </style>
+
 </head>
 
 <body id="page-top">
@@ -64,10 +86,76 @@ if ($res && mysqli_num_rows($res) > 0) {
 
             <!-- Page Content -->
             <hr>
-            <p>Utiliza esta página para crear tus pantallas.</p>
 
+            <?php
+            $sql_vacantes = "SELECT * FROM convocatorias WHERE visible = 1 ORDER BY id DESC LIMIT 5;;";
+            $vacantes = mysqli_query($conexion, $sql_vacantes);
+
+            if ($vacantes && mysqli_num_rows($vacantes) > 0) {
+                $html = <<<HTML
+    <div class="container d-flex justify-content-center">
+        <div id="carouselExampleIndicators" class="carousel slide" style="width: 70%;" data-ride="carousel">
+            <ol class="carousel-indicators">
+HTML;
+
+                $i = 0;
+                while ($row = mysqli_fetch_assoc($vacantes)){
+                    $activeClass = ($i === 0) ? 'active' : '';
+                    $html .= <<<HTML
+                <li data-target="#carouselExampleIndicators" data-slide-to="{$i}" class="{$activeClass}"></li>
+HTML;
+                    $i++;
+                }
+
+                $html .= <<<HTML
+            </ol>
+            <div class="carousel-inner">
+HTML;
+
+                mysqli_data_seek($vacantes, 0); // Reset the result pointer to the first row
+                $i = 0;
+                while ($row = mysqli_fetch_assoc($vacantes)){
+                    $src = "../academia/Vinculador/vacantes/" . $row['imagen'];
+                    $activeClass = ($i === 0) ? 'active' : '';
+                    $vacantes_disponibles = $row['vacantes'] == 0 ? 'Indefinidas' : $row['vacantes'];
+                    $html .= <<<HTML
+                <div class="carousel-item {$activeClass}">
+                    <div class="overlay"></div>
+                    <img class="d-block w-100" src="{$src}" alt="Slide {$i}">
+                    <div class="carousel-caption d-none d-md-block">
+                    <h5><a href="convocatorias.php" style="color: white; text-decoration: none">{$row['titulo']}</a></h5>
+                        
+                        <p>Vacantes disponibles: {$vacantes_disponibles}</p>
+                    </div>
+                </div>
+HTML;
+                    $i++;
+                }
+
+                $html .= <<<HTML
+            </div>
+            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
         </div>
-        <!-- /.container-fluid -->
+    </div>
+HTML;
+
+                echo $html;
+
+            } else {
+                echo 'No hay convocatorias en este momento';
+            }
+            ?>
+
+
+
+            <!-- /.container-fluid -->
 
         <?php getFooter() ?>
 
