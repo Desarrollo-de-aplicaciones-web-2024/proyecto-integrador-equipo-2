@@ -1,15 +1,31 @@
 <?php
+session_start();
 require_once '../../config/global.php';
 define('RUTA_INCLUDE', '../../'); //ajustar a necesidad
 require_once '../../config/db.php';
+
+$matAlumno = isset($_SESSION['matricula']) ? $_SESSION['matricula'] : null;
+
+if (!$matAlumno) {
+    header('Location: ../index.php');
+    exit();
+}
+
+//obtener datos del alumno
+$sql_alumno = "SELECT a.nombre, a.semestre, p.estatus FROM alumnos a LEFT JOIN practicas p ON a.matricula = p.matricula_alumno WHERE a.matricula = '$matAlumno';";
+$res = mysqli_query($conexion, $sql_alumno);
+
+if ($res && mysqli_num_rows($res) > 0) {
+    $row = mysqli_fetch_assoc($res);
+    $nombre = $row['nombre'];
+    $semestre = $row['semestre'];
+    $practica_status = $row['estatus'];
+} else {
+    header('Location: ../index.php');
+}
+
 $query = "SELECT * FROM convocatorias as c JOIN empresas as e ON c.id_empresa = e.id;";
 $res = mysqli_query($conexion,$query);
-
-//    $stmt = mysqli_prepare($conexion, $query);
-//    mysqli_stmt_execute($stmt);
-//    $result = mysqli_stmt_get_result($stmt);
-//    $data = mysqli_fetch_all($result);
-//    mysqli_stmt_close($stmt);
 ?>
 
 <!DOCTYPE html>
@@ -45,8 +61,7 @@ $res = mysqli_query($conexion,$query);
 <?php getNavbar() ?>
 
 <div id="wrapper">
-
-    <?php getSidebar() ?>
+    <?php getSidebarAlumno('./', $semestre, $practica_status) ?>
 
     <div id="content-wrapper">
 

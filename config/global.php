@@ -222,7 +222,7 @@ function getSidebarAlumno($ruta = '', $semestre, $practica){
 <!-- Sidebar -->
 
     <li class="nav-item">
-        <a class="nav-link" href="{$ruta}convocatorias.php">
+        <a class="nav-link" href="{$ruta}alumno-convocatorias.php">
             <i class="fas fa-truck"></i>
             <span>Convocatorias</span>
         </a>
