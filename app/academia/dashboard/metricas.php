@@ -23,8 +23,32 @@ define('RUTA_INCLUDE', '../../../');
 <?php getNavbar() ?>
 
 <div id="wrapper">
-
-    <?php getSidebar() ?>
+    <ul class="sidebar navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" href="metricas.php">
+                <i class="fas fa-calculator"></i>
+                <span>Dashboard</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="documentosPendientes.php">
+                <i class="fas fa-exclamation-triangle"></i>
+                <span>Documentos pendientes</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="../Vinculador/empresas/index.php">
+                <i class="fas fa-fw fa-building"></i>
+                <span>Empresas</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="../Vinculador/vacantes">
+                <i class="fas fa-dollar-sign"></i>
+                <span>Vacantes</span>
+            </a>
+        </li>
+    </ul>
 
     <div id="content-wrapper">
         <div class="container-fluid">
@@ -84,7 +108,7 @@ define('RUTA_INCLUDE', '../../../');
                         <div class="card-body">
                             <canvas id="myBarChart" width="100%" height="50"></canvas>
                         </div>
-                        <div class="card-footer small text-muted">Actualizado hoy a las 11:59 PM</div>
+                        <div class="card-footer small text-muted">Actualizado hoy a las 16:44 PM</div>
                     </div>
                 </div>
                 <div class="col-lg-6">
@@ -96,7 +120,7 @@ define('RUTA_INCLUDE', '../../../');
                         <div class="card-body">
                             <canvas id="myPieChart" width="100%" height="50"></canvas>
                         </div>
-                        <div class="card-footer small text-muted">Actualizado ayer a las at 11:59 PM</div>
+                        <div class="card-footer small text-muted">Actualizado hoy a las at 15:27 PM</div>
                     </div>
                 </div>
             </div>

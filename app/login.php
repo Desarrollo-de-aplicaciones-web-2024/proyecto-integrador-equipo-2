@@ -70,7 +70,7 @@ if($resulta == ''){
 }else {
     switch ($puesto){
         case "admin":
-            header('Location: admin/index.php');
+            header('Location: academia/dashboard/metricas.php');
             break;
         case "jefe":
             header('Location: academia/Aseguramiento/index.php');

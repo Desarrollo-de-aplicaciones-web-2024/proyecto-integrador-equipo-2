@@ -288,7 +288,33 @@ function getRegistros($conexion, $ciudades) {
 
 <div id="wrapper">
 
-    <?php getSidebar() ?>
+    <ul class="sidebar navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" href="../../dashboard/metricas.php">
+                <i class="fas fa-calculator"></i>
+                <span>Dashboard</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="../../dashboard/documentosPendientes.php">
+                <i class="fas fa-exclamation-triangle"></i>
+                <span>Documentos pendientes</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="index.php">
+                <i class="fas fa-fw fa-building"></i>
+                <span>Empresas</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="../vacantes/index.php">
+                <i class="fas fa-dollar-sign"></i>
+                <span>Vacantes</span>
+            </a>
+        </li>
+    </ul>
+
 
     <div id="content-wrapper">
 
