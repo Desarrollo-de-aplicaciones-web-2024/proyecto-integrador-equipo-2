@@ -83,7 +83,7 @@ define('RUTA_INCLUDE', '../../../');
                 <!-- PDF Preview Column -->
                 <div class="col-md-8 mb-4 pb-4">
                     <h4>Vista previa</h4>
-                    <iframe src="http://proyecto-integrador-equipo-2.test/app <?= $document['ruta'] ?>" width="100%" height="800" ></iframe>
+                    <iframe src="/app<?= $document['ruta'] ?>" width="100%" height="800" ></iframe>
                 </div>
             </div>
         </div>
