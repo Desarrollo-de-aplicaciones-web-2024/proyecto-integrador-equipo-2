@@ -103,6 +103,7 @@ EOD;
     echo $html;
 }
 
+
 function getFooter(){
     $anio_footer = date('Y');
 
